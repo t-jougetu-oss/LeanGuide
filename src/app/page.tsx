@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth, signIn, signOut } from "@/auth";
 
 export default async function Home() {
@@ -19,6 +20,12 @@ export default async function Home() {
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 ログイン中: {session.user.name}
               </p>
+              <Link
+                href="/profile"
+                className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+              >
+                プロフィール登録
+              </Link>
               <form
                 action={async () => {
                   "use server";
