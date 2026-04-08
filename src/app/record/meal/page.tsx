@@ -5,6 +5,8 @@ import { db } from "@/db";
 import { users, mealLogs } from "@/db/schema";
 import { eq, and, sql } from "drizzle-orm";
 import { MealForm } from "./meal-form";
+import { AppShell } from "../../components/app-shell";
+import { RecordTabs } from "../../components/record-tabs";
 
 const mealTypeLabels: Record<string, string> = {
   breakfast: "朝食",
@@ -46,18 +48,11 @@ export default async function MealRecordPage() {
   );
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 items-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">食事を記録</h1>
-          <Link
-            href="/dashboard"
-            className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-          >
-            戻る
-          </Link>
-        </div>
-
+        <h1 className="text-2xl font-bold mb-6">記録する</h1>
+        <RecordTabs />
         <MealForm />
 
         {/* 今日の記録一覧 */}
@@ -120,5 +115,6 @@ export default async function MealRecordPage() {
         )}
       </div>
     </div>
+    </AppShell>
   );
 }

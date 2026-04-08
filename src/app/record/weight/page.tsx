@@ -6,6 +6,8 @@ import { users, goals, weightLogs } from "@/db/schema";
 import { eq, and, gte, sql } from "drizzle-orm";
 import { WeightForm } from "./weight-form";
 import { WeightMiniChart } from "../../dashboard/weight-mini-chart";
+import { AppShell } from "../../components/app-shell";
+import { RecordTabs } from "../../components/record-tabs";
 
 export default async function WeightRecordPage() {
   const session = await auth();
@@ -53,18 +55,11 @@ export default async function WeightRecordPage() {
   );
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 items-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">体重を記録</h1>
-          <Link
-            href="/dashboard"
-            className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-          >
-            戻る
-          </Link>
-        </div>
-
+        <h1 className="text-2xl font-bold mb-6">記録する</h1>
+        <RecordTabs />
         <WeightForm />
 
         {/* 体重推移グラフ */}
@@ -108,5 +103,6 @@ export default async function WeightRecordPage() {
         )}
       </div>
     </div>
+    </AppShell>
   );
 }

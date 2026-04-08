@@ -4,6 +4,7 @@ import Link from "next/link";
 import { db } from "@/db";
 import { users, goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
+import { AppShell } from "../components/app-shell";
 
 export default async function ReviewPage() {
   const session = await auth();
@@ -124,15 +125,10 @@ export default async function ReviewPage() {
       : null;
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8">
         <h1 className="text-2xl font-bold">週次振り返り</h1>
-        <Link
-          href="/dashboard"
-          className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-        >
-          ダッシュボードへ
-        </Link>
       </div>
 
       <p className="text-sm text-zinc-500 mb-6">
@@ -304,5 +300,6 @@ export default async function ReviewPage() {
         詳しい原因分析を見る
       </Link>
     </div>
+    </AppShell>
   );
 }

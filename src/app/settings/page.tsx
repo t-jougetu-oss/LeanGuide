@@ -6,6 +6,7 @@ import { users, profiles, goals } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ProfileForm } from "./profile-form";
 import { GoalForm } from "./goal-form";
+import { AppShell } from "../components/app-shell";
 
 const activityLabels: Record<string, string> = {
   sedentary: "ほぼ運動しない",
@@ -44,15 +45,10 @@ export default async function SettingsPage() {
   const goal = goalRows.length > 0 ? goalRows[0] : null;
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8">
         <h1 className="text-2xl font-bold">設定</h1>
-        <Link
-          href="/dashboard"
-          className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-        >
-          ダッシュボードに戻る
-        </Link>
       </div>
 
       {/* アカウント情報 */}
@@ -169,5 +165,6 @@ export default async function SettingsPage() {
         </div>
       </section>
     </div>
+    </AppShell>
   );
 }

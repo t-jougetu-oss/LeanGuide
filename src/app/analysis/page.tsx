@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { users, goals, mealLogs, weightLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
+import { AppShell } from "../components/app-shell";
 
 export default async function AnalysisPage() {
   const session = await auth();
@@ -121,20 +122,14 @@ export default async function AnalysisPage() {
   };
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8">
         <h1 className="text-2xl font-bold">原因分析</h1>
-        <Link
-          href="/dashboard"
-          className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-        >
-          ダッシュボードへ
-        </Link>
+        <p className="text-sm text-zinc-500 mt-2">
+          直近7日間（{startDate} 〜 {endDate}）のデータに基づく分析
+        </p>
       </div>
-
-      <p className="text-sm text-zinc-500 mb-6">
-        直近7日間（{startDate} 〜 {endDate}）のデータに基づく分析
-      </p>
 
       <div className="flex flex-col gap-4">
         {results.map((result, i) => (
@@ -155,6 +150,11 @@ export default async function AnalysisPage() {
           </div>
         ))}
       </div>
+
+      <p className="text-xs text-zinc-400 mt-6 text-center">
+        この分析は一般的な栄養学の知見に基づく参考情報です。医療的な判断ではありません。
+      </p>
     </div>
+    </AppShell>
   );
 }

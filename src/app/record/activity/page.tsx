@@ -5,6 +5,8 @@ import { db } from "@/db";
 import { users, profiles, activityLogs } from "@/db/schema";
 import { eq, and, sql } from "drizzle-orm";
 import { ActivityForm } from "./activity-form";
+import { AppShell } from "../../components/app-shell";
+import { RecordTabs } from "../../components/record-tabs";
 
 export default async function ActivityRecordPage() {
   const session = await auth();
@@ -45,18 +47,11 @@ export default async function ActivityRecordPage() {
   );
 
   return (
+    <AppShell>
     <div className="flex flex-col flex-1 items-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold">活動を記録</h1>
-          <Link
-            href="/dashboard"
-            className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-          >
-            戻る
-          </Link>
-        </div>
-
+        <h1 className="text-2xl font-bold mb-6">記録する</h1>
+        <RecordTabs />
         <ActivityForm weightKg={weightKg} />
 
         {/* 今日の活動一覧 */}
@@ -108,5 +103,6 @@ export default async function ActivityRecordPage() {
         )}
       </div>
     </div>
+    </AppShell>
   );
 }
