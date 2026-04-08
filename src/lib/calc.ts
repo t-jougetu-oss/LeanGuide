@@ -27,3 +27,32 @@ export function calcTDEE(
 ): number {
   return Math.round(bmr * activityMultiplier[activityLevel]);
 }
+
+// 1日の目標摂取カロリーを算出
+// 体脂肪1kgあたり約7200kcal
+export function calcDailyCalorieTarget(
+  tdee: number,
+  currentWeightKg: number,
+  targetWeightKg: number,
+  daysToGoal: number
+): number {
+  const totalDeficit = (currentWeightKg - targetWeightKg) * 7200;
+  const dailyDeficit = totalDeficit / daysToGoal;
+  return Math.round(tdee - dailyDeficit);
+}
+
+// 目標PFCバランスを算出（g単位）
+export function calcPFC(
+  dailyCalories: number,
+  weightKg: number
+): { protein: number; fat: number; carb: number } {
+  // タンパク質: 体重 × 1.6g
+  const protein = Math.round(weightKg * 1.6);
+  // 脂質: 総カロリーの25%
+  const fat = Math.round((dailyCalories * 0.25) / 9);
+  // 炭水化物: 残りのカロリー
+  const carb = Math.round(
+    (dailyCalories - protein * 4 - fat * 9) / 4
+  );
+  return { protein, fat, carb };
+}
