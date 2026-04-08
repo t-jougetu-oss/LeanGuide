@@ -17,7 +17,8 @@ export function WeightForm() {
       setError(result.error);
       setSaving(false);
     } else {
-      router.push("/dashboard");
+      router.refresh();
+      setSaving(false);
     }
   }
 
