@@ -121,11 +121,22 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      {/* 原因分析（後で実装） */}
+      {/* 分析・振り返り */}
       <section className="mb-6">
-        <h2 className="text-sm font-medium text-zinc-500 mb-3">原因分析</h2>
-        <div className="rounded-xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-400 dark:border-zinc-700">
-          データが蓄積されると、ここに分析結果が表示されます
+        <h2 className="text-sm font-medium text-zinc-500 mb-3">分析・振り返り</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <Link
+            href="/analysis"
+            className="rounded-xl border border-zinc-200 p-4 text-center text-sm font-medium transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+          >
+            原因分析
+          </Link>
+          <Link
+            href="/review"
+            className="rounded-xl border border-zinc-200 p-4 text-center text-sm font-medium transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+          >
+            週次振り返り
+          </Link>
         </div>
       </section>
 
