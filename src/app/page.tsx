@@ -20,20 +20,12 @@ export default async function Home() {
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 ログイン中: {session.user.name}
               </p>
-              <div className="flex gap-3">
-                <Link
-                  href="/profile"
-                  className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
-                >
-                  プロフィール
-                </Link>
-                <Link
-                  href="/goal"
-                  className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
-                >
-                  目標設定
-                </Link>
-              </div>
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+              >
+                ダッシュボードへ
+              </Link>
               <form
                 action={async () => {
                   "use server";
