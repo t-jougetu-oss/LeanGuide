@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/db";
-import { users, goals, mealLogs, weightLogs } from "@/db/schema";
+import { users, profiles, goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
 import { AppShell } from "../components/app-shell";
@@ -75,6 +75,28 @@ export default async function AnalysisPage() {
       )
     );
 
+  // 活動データ
+  const activitySummary = await db
+    .select({
+      totalMinutes: sql<number>`coalesce(sum(${activityLogs.durationMinutes}), 0)`,
+      totalCaloriesBurned: sql<number>`coalesce(sum(${activityLogs.caloriesBurned}), 0)`,
+    })
+    .from(activityLogs)
+    .where(
+      and(
+        eq(activityLogs.userId, userId),
+        gte(activityLogs.date, startDate),
+        lte(activityLogs.date, endDate)
+      )
+    );
+
+  // プロフィールからTDEE取得
+  const profileRows = await db
+    .select()
+    .from(profiles)
+    .where(eq(profiles.userId, userId));
+  const tdee = profileRows.length > 0 ? Number(profileRows[0].tdee) : undefined;
+
   // 日ごとのデータを統合
   const dailyData = [];
   for (let i = 0; i < 7; i++) {
@@ -99,13 +121,21 @@ export default async function AnalysisPage() {
     }
   }
 
-  const results = analyzeWeeklyData(dailyData, {
-    dailyCalorieTarget: goal.dailyCalorieTarget ?? 2000,
-    proteinGrams: goal.proteinGrams ?? 100,
-    fatGrams: goal.fatGrams ?? 55,
-    carbGrams: goal.carbGrams ?? 250,
-    targetWeightKg: Number(goal.targetWeightKg),
-  });
+  const results = analyzeWeeklyData(
+    dailyData,
+    {
+      dailyCalorieTarget: goal.dailyCalorieTarget ?? 2000,
+      proteinGrams: goal.proteinGrams ?? 100,
+      fatGrams: goal.fatGrams ?? 55,
+      carbGrams: goal.carbGrams ?? 250,
+      targetWeightKg: Number(goal.targetWeightKg),
+    },
+    {
+      totalMinutes: activitySummary[0].totalMinutes,
+      totalCaloriesBurned: activitySummary[0].totalCaloriesBurned,
+    },
+    tdee
+  );
 
   const typeStyles = {
     warning:
