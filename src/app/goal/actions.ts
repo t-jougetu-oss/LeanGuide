@@ -40,13 +40,21 @@ export async function saveGoal(formData: FormData) {
 
   if (daysToGoal <= 0) return { error: "達成期限は未来の日付を入力してください" };
 
+  const proteinPercent = Number(formData.get("proteinPercent")) || 25;
+  const fatPercent = Number(formData.get("fatPercent")) || 25;
+  const carbPercent = Number(formData.get("carbPercent")) || 50;
+
   const dailyCalorieTarget = calcDailyCalorieTarget(
     tdee,
     currentWeightKg,
     targetWeightKg,
     daysToGoal
   );
-  const pfc = calcPFC(dailyCalorieTarget, currentWeightKg);
+
+  // PFC%からグラム数を算出
+  const proteinGrams = Math.round((dailyCalorieTarget * proteinPercent / 100) / 4);
+  const fatGrams = Math.round((dailyCalorieTarget * fatPercent / 100) / 9);
+  const carbGrams = Math.round((dailyCalorieTarget * carbPercent / 100) / 4);
 
   const existingGoal = await db
     .select()
@@ -60,9 +68,12 @@ export async function saveGoal(formData: FormData) {
         targetWeightKg: String(targetWeightKg),
         targetDate,
         dailyCalorieTarget,
-        proteinGrams: pfc.protein,
-        fatGrams: pfc.fat,
-        carbGrams: pfc.carb,
+        proteinPercent,
+        fatPercent,
+        carbPercent,
+        proteinGrams,
+        fatGrams,
+        carbGrams,
         updatedAt: new Date(),
       })
       .where(eq(goals.userId, userId));
@@ -72,9 +83,12 @@ export async function saveGoal(formData: FormData) {
       targetWeightKg: String(targetWeightKg),
       targetDate,
       dailyCalorieTarget,
-      proteinGrams: pfc.protein,
-      fatGrams: pfc.fat,
-      carbGrams: pfc.carb,
+      proteinPercent,
+      fatPercent,
+      carbPercent,
+      proteinGrams,
+      fatGrams,
+      carbGrams,
     });
   }
 

@@ -22,6 +22,10 @@ export async function saveProfile(formData: FormData) {
     | "active"
     | "very_active";
 
+  const proteinPercent = Number(formData.get("proteinPercent")) || 25;
+  const fatPercent = Number(formData.get("fatPercent")) || 25;
+  const carbPercent = Number(formData.get("carbPercent")) || 50;
+
   if (!gender || !age || !heightCm || !weightKg || !activityLevel) {
     return { error: "すべての項目を入力してください" };
   }
@@ -65,6 +69,9 @@ export async function saveProfile(formData: FormData) {
         activityLevel,
         bmr: String(bmr),
         tdee: String(tdee),
+        proteinPercent,
+        fatPercent,
+        carbPercent,
         updatedAt: new Date(),
       })
       .where(eq(profiles.userId, userId));
@@ -78,6 +85,9 @@ export async function saveProfile(formData: FormData) {
       activityLevel,
       bmr: String(bmr),
       tdee: String(tdee),
+      proteinPercent,
+      fatPercent,
+      carbPercent,
     });
   }
 

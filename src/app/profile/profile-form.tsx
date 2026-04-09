@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveProfile } from "./actions";
+import { PfcPresetSelector } from "../components/pfc-preset-selector";
 
 type ExistingProfile = {
   gender: "male" | "female";
@@ -10,6 +11,9 @@ type ExistingProfile = {
   heightCm: string;
   weightKg: string;
   activityLevel: "sedentary" | "light" | "moderate" | "active" | "very_active";
+  proteinPercent: number | null;
+  fatPercent: number | null;
+  carbPercent: number | null;
 } | null;
 
 const activityLabels = {
@@ -138,6 +142,15 @@ export function ProfileForm({
           ))}
         </select>
       </label>
+
+      {/* PFCバランス */}
+      <div className="border-t border-zinc-200 pt-4 mt-1">
+        <PfcPresetSelector
+          defaultP={existingProfile?.proteinPercent ?? 25}
+          defaultF={existingProfile?.fatPercent ?? 25}
+          defaultC={existingProfile?.carbPercent ?? 50}
+        />
+      </div>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
 

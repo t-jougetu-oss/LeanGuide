@@ -6,7 +6,7 @@ export default function HelpPage() {
     <AppShell>
       <div className="flex flex-col flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
         <Link
-          href="/dashboard"
+          href="/settings"
           className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 mb-4"
         >
           &lt; 戻る

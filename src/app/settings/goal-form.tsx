@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { saveGoal } from "./actions";
 import { calcDailyCalorieTarget, calcPFC } from "@/lib/calc";
 import { DateInput } from "../components/date-input";
+import { PfcPresetSelector } from "../components/pfc-preset-selector";
 
 type Goal = {
   targetWeightKg: string;
@@ -13,6 +14,9 @@ type Goal = {
   proteinGrams: number | null;
   fatGrams: number | null;
   carbGrams: number | null;
+  proteinPercent: number | null;
+  fatPercent: number | null;
+  carbPercent: number | null;
 };
 
 export function GoalForm({
@@ -97,8 +101,17 @@ export function GoalForm({
         </div>
       </div>
 
+      {/* PFCバランス */}
+      <div className="border-t border-zinc-200 pt-4 mt-1">
+        <PfcPresetSelector
+          defaultP={existingGoal.proteinPercent ?? 25}
+          defaultF={existingGoal.fatPercent ?? 25}
+          defaultC={existingGoal.carbPercent ?? 50}
+        />
+      </div>
+
       {preview && (
-        <div className="rounded-lg bg-zinc-50 p-3 text-sm dark:bg-zinc-800">
+        <div className="rounded-lg bg-zinc-50 p-3 text-sm">
           <p>
             1日の目標: <strong>{preview.cal}kcal</strong>（P:{preview.pfc.protein}g / F:{preview.pfc.fat}g / C:{preview.pfc.carb}g）
           </p>

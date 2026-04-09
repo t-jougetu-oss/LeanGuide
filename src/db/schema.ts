@@ -46,6 +46,9 @@ export const profiles = pgTable("profiles", {
   activityLevel: activityLevelEnum("activity_level").notNull(),
   bmr: numeric("bmr"), // 基礎代謝（自動算出）
   tdee: numeric("tdee"), // 総消費カロリー（自動算出）
+  proteinPercent: integer("protein_percent"), // PFCバランス（%）
+  fatPercent: integer("fat_percent"),
+  carbPercent: integer("carb_percent"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
