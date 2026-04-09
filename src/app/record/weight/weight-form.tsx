@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveWeight } from "./actions";
+import { DateInput } from "../../components/date-input";
 
 export function WeightForm() {
   const router = useRouter();
@@ -24,16 +25,14 @@ export function WeightForm() {
 
   return (
     <form action={handleSubmit} className="flex flex-col gap-5">
-      <label className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <span className="text-sm font-medium">日付</span>
-        <input
-          type="date"
+        <DateInput
           name="date"
           defaultValue={new Date().toISOString().split("T")[0]}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
         />
-      </label>
+      </div>
 
       <label className="flex flex-col gap-1">
         <span className="text-sm font-medium">体重（kg）</span>
@@ -46,6 +45,19 @@ export function WeightForm() {
           required
           className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：65.0"
+        />
+      </label>
+
+      <label className="flex flex-col gap-1">
+        <span className="text-sm font-medium">体脂肪率（%）</span>
+        <input
+          type="number"
+          name="bodyFatPercent"
+          min="1"
+          max="60"
+          step="0.1"
+          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          placeholder="例：17.6"
         />
       </label>
 

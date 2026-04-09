@@ -1,8 +1,27 @@
 import Link from "next/link";
-import { auth, signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
+import { auth, signOut } from "@/auth";
+import { findUserBySession } from "@/lib/user";
+import { db } from "@/db";
+import { profiles } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function Home() {
   const session = await auth();
+
+  // ログイン済み+プロフィール登録済みなら直接ダッシュボードへ
+  if (session?.user) {
+    const user = await findUserBySession(session.user);
+    if (user) {
+      const profileRows = await db
+        .select()
+        .from(profiles)
+        .where(eq(profiles.userId, user.id));
+      if (profileRows.length > 0) {
+        redirect("/dashboard");
+      }
+    }
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center">
@@ -81,19 +100,12 @@ export default async function Home() {
               </form>
             </div>
           ) : (
-            <form
-              action={async () => {
-                "use server";
-                await signIn("google");
-              }}
+            <Link
+              href="/login"
+              className="w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-medium text-white text-center transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200 block"
             >
-              <button
-                type="submit"
-                className="w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
-              >
-                Googleで始める
-              </button>
-            </form>
+              ログイン / 新規登録
+            </Link>
           )}
         </div>
 

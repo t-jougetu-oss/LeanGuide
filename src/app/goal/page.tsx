@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, profiles, goals } from "@/db/schema";
+import { profiles, goals } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { GoalForm } from "./goal-form";
 
@@ -9,14 +10,10 @@ export default async function GoalPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
 
-  if (userRows.length === 0) redirect("/profile");
-
-  const userId = userRows[0].id;
+  const userId = user.id;
 
   const profileRows = await db
     .select()

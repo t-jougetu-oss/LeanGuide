@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { profiles, users } from "@/db/schema";
+import { profiles } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ProfileForm } from "./profile-form";
 
@@ -10,17 +11,14 @@ export default async function ProfilePage() {
   if (!session?.user) redirect("/");
 
   // 既存プロフィールを取得
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  const user = await findUserBySession(session.user);
 
   let existingProfile = null;
-  if (userRows.length > 0) {
+  if (user) {
     const profileRows = await db
       .select()
       .from(profiles)
-      .where(eq(profiles.userId, userRows[0].id));
+      .where(eq(profiles.userId, user.id));
     if (profileRows.length > 0) {
       existingProfile = profileRows[0];
     }

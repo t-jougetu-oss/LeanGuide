@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveGoal } from "./actions";
 import { calcDailyCalorieTarget, calcPFC } from "@/lib/calc";
+import { DateInput } from "../components/date-input";
 
 type ExistingGoal = {
   targetWeightKg: string;
@@ -97,16 +98,14 @@ export function GoalForm({
       </label>
 
       {/* 達成期限 */}
-      <label className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <span className="text-sm font-medium">達成期限</span>
-        <input
-          type="date"
+        <DateInput
           name="targetDate"
           defaultValue={existingGoal?.targetDate ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
         />
-      </label>
+      </div>
 
       {/* プレビュー */}
       {preview && (

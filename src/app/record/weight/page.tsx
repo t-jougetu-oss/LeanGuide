@@ -1,8 +1,9 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, goals, weightLogs } from "@/db/schema";
+import { goals, weightLogs } from "@/db/schema";
 import { eq, and, gte, sql } from "drizzle-orm";
 import { WeightForm } from "./weight-form";
 import { WeightMiniChart } from "../../dashboard/weight-mini-chart";
@@ -13,13 +14,9 @@ export default async function WeightRecordPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
-
-  if (userRows.length === 0) redirect("/profile");
-  const userId = userRows[0].id;
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
+  const userId = user.id;
 
   // 目標を取得
   const goalRows = await db
@@ -95,7 +92,14 @@ export default async function WeightRecordPage() {
                     <span className="text-sm text-zinc-500">
                       {w.date.slice(5)}
                     </span>
-                    <span className="text-sm font-medium">{w.weightKg}kg</span>
+                    <div className="text-right">
+                      <span className="text-sm font-medium">{w.weightKg}kg</span>
+                      {w.bodyFatPercent && (
+                        <span className="text-xs text-zinc-400 ml-2">
+                          {w.bodyFatPercent}%
+                        </span>
+                      )}
+                    </div>
                   </div>
                 ))}
             </div>

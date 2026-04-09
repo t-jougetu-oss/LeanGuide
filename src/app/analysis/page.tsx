@@ -1,8 +1,9 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, profiles, goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
+import { profiles, goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
 import { AppShell } from "../components/app-shell";
@@ -11,13 +12,9 @@ export default async function AnalysisPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
-
-  if (userRows.length === 0) redirect("/profile");
-  const userId = userRows[0].id;
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
+  const userId = user.id;
 
   const goalRows = await db
     .select()

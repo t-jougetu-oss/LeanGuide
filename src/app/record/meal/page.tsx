@@ -1,14 +1,16 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, mealLogs } from "@/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { mealLogs, mealFavorites } from "@/db/schema";
+import { eq, and, sql, desc } from "drizzle-orm";
 import { MealForm } from "./meal-form";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
 
 const mealTypeLabels: Record<string, string> = {
+  meal: "食事",
   breakfast: "朝食",
   lunch: "昼食",
   dinner: "夕食",
@@ -19,13 +21,16 @@ export default async function MealRecordPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
+  const userId = user.id;
 
-  if (userRows.length === 0) redirect("/profile");
-  const userId = userRows[0].id;
+  // お気に入り取得
+  const favRows = await db
+    .select()
+    .from(mealFavorites)
+    .where(eq(mealFavorites.userId, userId))
+    .orderBy(desc(mealFavorites.createdAt));
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -53,7 +58,7 @@ export default async function MealRecordPage() {
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6">記録する</h1>
         <RecordTabs />
-        <MealForm />
+        <MealForm favorites={favRows} />
 
         {/* 今日の記録一覧 */}
         {todayMealsList.length > 0 && (

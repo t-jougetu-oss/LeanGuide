@@ -1,8 +1,9 @@
 "use server";
 
 import { auth } from "@/auth";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, profiles, goals } from "@/db/schema";
+import { profiles, goals } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { calcBMR, calcTDEE, calcDailyCalorieTarget, calcPFC } from "@/lib/calc";
 
@@ -28,14 +29,10 @@ export async function saveProfile(formData: FormData) {
   const bmr = calcBMR(gender, weightKg, heightCm, age);
   const tdee = calcTDEE(bmr, activityLevel);
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  const user = await findUserBySession(session.user);
+  if (!user) return { error: "ユーザーが見つかりません" };
 
-  if (userRows.length === 0) return { error: "ユーザーが見つかりません" };
-
-  const userId = userRows[0].id;
+  const userId = user.id;
 
   await db
     .update(profiles)
@@ -65,14 +62,10 @@ export async function saveGoal(formData: FormData) {
     return { error: "すべての項目を入力してください" };
   }
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  const user = await findUserBySession(session.user);
+  if (!user) return { error: "ユーザーが見つかりません" };
 
-  if (userRows.length === 0) return { error: "ユーザーが見つかりません" };
-
-  const userId = userRows[0].id;
+  const userId = user.id;
 
   const profileRows = await db
     .select()

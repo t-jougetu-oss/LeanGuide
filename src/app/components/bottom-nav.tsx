@@ -46,7 +46,7 @@ const navItems = [
   {
     href: "/analysis",
     label: "分析",
-    matchPrefixes: ["/analysis", "/review"],
+    matchPrefixes: ["/analysis", "/review", "/graph"],
     icon: (active: boolean) => (
       <svg
         width="24"

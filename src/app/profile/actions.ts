@@ -35,15 +35,30 @@ export async function saveProfile(formData: FormData) {
     .where(eq(users.googleId, session.user.id!));
 
   if (userRows.length === 0) {
+    // googleIdで見つからない場合、emailで既存ユーザーを検索
     userRows = await db
-      .insert(users)
-      .values({
-        googleId: session.user.id!,
-        email: session.user.email!,
-        name: session.user.name!,
-        avatarUrl: session.user.image,
-      })
-      .returning();
+      .select()
+      .from(users)
+      .where(eq(users.email, session.user.email!));
+
+    if (userRows.length === 0) {
+      // 完全に新規ユーザー
+      userRows = await db
+        .insert(users)
+        .values({
+          googleId: session.user.id!,
+          email: session.user.email!,
+          name: session.user.name!,
+          avatarUrl: session.user.image,
+        })
+        .returning();
+    } else {
+      // emailは存在するがgoogleIdが異なる → googleIdを更新
+      await db
+        .update(users)
+        .set({ googleId: session.user.id!, name: session.user.name!, avatarUrl: session.user.image })
+        .where(eq(users.email, session.user.email!));
+    }
   }
 
   const userId = userRows[0].id;

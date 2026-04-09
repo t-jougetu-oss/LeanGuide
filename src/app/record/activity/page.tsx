@@ -1,9 +1,10 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, profiles, activityLogs } from "@/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { profiles, activityLogs, activityFavorites } from "@/db/schema";
+import { eq, and, sql, desc } from "drizzle-orm";
 import { ActivityForm } from "./activity-form";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
@@ -12,13 +13,9 @@ export default async function ActivityRecordPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
-
-  if (userRows.length === 0) redirect("/profile");
-  const userId = userRows[0].id;
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
+  const userId = user.id;
 
   // プロフィールから体重を取得（カロリー推定用）
   const profileRows = await db
@@ -37,6 +34,13 @@ export default async function ActivityRecordPage() {
     .where(and(eq(activityLogs.userId, userId), eq(activityLogs.date, today)))
     .orderBy(sql`${activityLogs.createdAt} asc`);
 
+  // お気に入り取得
+  const favRows = await db
+    .select()
+    .from(activityFavorites)
+    .where(eq(activityFavorites.userId, userId))
+    .orderBy(desc(activityFavorites.createdAt));
+
   const totalMinutes = todayActivities.reduce(
     (sum, a) => sum + a.durationMinutes,
     0
@@ -52,7 +56,7 @@ export default async function ActivityRecordPage() {
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6">記録する</h1>
         <RecordTabs />
-        <ActivityForm weightKg={weightKg} />
+        <ActivityForm weightKg={weightKg} favorites={favRows} />
 
         {/* 今日の活動一覧 */}
         {todayActivities.length > 0 && (
@@ -90,6 +94,11 @@ export default async function ActivityRecordPage() {
                     <p className="text-xs text-zinc-400">
                       {activity.durationMinutes}分
                     </p>
+                    {activity.memo && (
+                      <p className="text-xs text-zinc-400 mt-0.5">
+                        {activity.memo}
+                      </p>
+                    )}
                   </div>
                   {activity.caloriesBurned != null && (
                     <span className="text-sm text-zinc-500">

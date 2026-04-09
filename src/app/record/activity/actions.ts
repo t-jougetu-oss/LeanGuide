@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { activityLogs } from "@/db/schema";
+import { activityLogs, activityFavorites } from "@/db/schema";
 import { requireUser } from "@/lib/user";
 
 export async function saveActivity(formData: FormData) {
@@ -11,9 +11,15 @@ export async function saveActivity(formData: FormData) {
   const date = formData.get("date") as string;
   const activityType = formData.get("activityType") as string;
   const durationMinutes = Number(formData.get("durationMinutes"));
-  const caloriesBurned = formData.get("caloriesBurned")
-    ? Number(formData.get("caloriesBurned"))
+  const manualCalories = formData.get("manualCalories")
+    ? Number(formData.get("manualCalories"))
     : null;
+  const estimatedCalories = formData.get("estimatedCalories")
+    ? Number(formData.get("estimatedCalories"))
+    : null;
+  const caloriesBurned = manualCalories || estimatedCalories || null;
+  const memo = (formData.get("memo") as string) || null;
+  const addToFavorite = formData.get("addToFavorite") === "on";
 
   if (!date || !activityType || !durationMinutes) {
     return { error: "日付・活動内容・時間は必須です" };
@@ -25,7 +31,17 @@ export async function saveActivity(formData: FormData) {
     activityType,
     durationMinutes,
     caloriesBurned,
+    memo,
   });
+
+  if (addToFavorite) {
+    await db.insert(activityFavorites).values({
+      userId: user.id,
+      name: activityType,
+      durationMinutes,
+      caloriesBurned,
+    });
+  }
 
   return { success: true };
 }

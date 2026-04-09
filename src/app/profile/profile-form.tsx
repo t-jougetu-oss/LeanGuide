@@ -28,6 +28,9 @@ export function ProfileForm({
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [gender, setGender] = useState<"male" | "female">(
+    existingProfile?.gender ?? "male"
+  );
 
   async function handleSubmit(formData: FormData) {
     setSaving(true);
@@ -45,30 +48,29 @@ export function ProfileForm({
   return (
     <form action={handleSubmit} className="flex flex-col gap-5">
       {/* 性別 */}
-      <fieldset>
-        <legend className="text-sm font-medium mb-2">性別</legend>
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              defaultChecked={existingProfile?.gender === "male"}
-              required
-            />
-            男性
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              defaultChecked={existingProfile?.gender === "female"}
-            />
-            女性
-          </label>
+      <div>
+        <span className="text-sm font-medium mb-2 block">性別</span>
+        <div className="flex gap-3">
+          {([
+            { value: "male", label: "男性" },
+            { value: "female", label: "女性" },
+          ] as const).map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setGender(opt.value)}
+              className={`flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
+                gender === opt.value
+                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-900"
+                  : "border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
         </div>
-      </fieldset>
+        <input type="hidden" name="gender" value={gender} />
+      </div>
 
       {/* 年齢 */}
       <label className="flex flex-col gap-1">

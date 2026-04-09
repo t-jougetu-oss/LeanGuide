@@ -1,24 +1,22 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { users, goals, mealLogs, weightLogs } from "@/db/schema";
+import { goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
 import { eq, and, sql, desc, gte } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
 import { WeightMiniChart } from "./weight-mini-chart";
+import { DashboardClient } from "./dashboard-client";
 import { AppShell } from "../components/app-shell";
 
 export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/");
 
-  const userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
-
-  if (userRows.length === 0) redirect("/profile");
-  const userId = userRows[0].id;
+  const user = await findUserBySession(session.user);
+  if (!user) redirect("/profile");
+  const userId = user.id;
 
   // 目標を取得
   const goalRows = await db
@@ -43,7 +41,17 @@ export default async function DashboardPage() {
 
   const meals = todayMeals[0];
 
-  // 直近14日間の体重記録（7日間移動平均の計算に必要）
+  // 今日の運動消費カロリー
+  const todayExercise = await db
+    .select({
+      totalBurned: sql<number>`coalesce(sum(${activityLogs.caloriesBurned}), 0)`,
+    })
+    .from(activityLogs)
+    .where(and(eq(activityLogs.userId, userId), eq(activityLogs.date, today)));
+
+  const exerciseCalories = Number(todayExercise[0]?.totalBurned ?? 0);
+
+  // 直近14日間の体重記録
   const fourteenDaysAgo = new Date();
   fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
   const recentWeights = await db
@@ -62,13 +70,17 @@ export default async function DashboardPage() {
       ? Number(recentWeights[recentWeights.length - 1].weightKg)
       : null;
 
-  // 体重データをチャート用に変換
+  const latestBodyFat =
+    recentWeights.length > 0 && recentWeights[recentWeights.length - 1].bodyFatPercent
+      ? Number(recentWeights[recentWeights.length - 1].bodyFatPercent)
+      : null;
+
   const weightChartData = recentWeights.map((w) => ({
     date: w.date,
     weight: Number(w.weightKg),
   }));
 
-  // 直近7日間の食事データで分析サマリを取得
+  // 分析サマリ
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
@@ -87,7 +99,6 @@ export default async function DashboardPage() {
     )
     .groupBy(mealLogs.date);
 
-  // 分析サマリを生成
   let analysisSummary: { type: string; title: string } | null = null;
   if (goal && recentMeals.length >= 3) {
     const dailyData = recentMeals.map((m) => {
@@ -115,138 +126,71 @@ export default async function DashboardPage() {
     }
   }
 
-  // プログレス計算
-  const caloriePercent = goal?.dailyCalorieTarget
-    ? Math.min(
-        Math.round((meals.totalCalories / goal.dailyCalorieTarget) * 100),
-        100
-      )
-    : 0;
-
-  const pfcData = goal
-    ? [
-        {
-          label: "P",
-          current: meals.totalProtein,
-          target: goal.proteinGrams ?? 0,
-          color: "bg-blue-500",
-        },
-        {
-          label: "F",
-          current: meals.totalFat,
-          target: goal.fatGrams ?? 0,
-          color: "bg-amber-500",
-        },
-        {
-          label: "C",
-          current: meals.totalCarb,
-          target: goal.carbGrams ?? 0,
-          color: "bg-green-500",
-        },
-      ]
-    : [];
+  // goalデータをクライアント用に整形
+  const goalData = goal
+    ? {
+        dailyCalorieTarget: Number(goal.dailyCalorieTarget ?? 0),
+        proteinGrams: Number(goal.proteinGrams ?? 0),
+        fatGrams: Number(goal.fatGrams ?? 0),
+        carbGrams: Number(goal.carbGrams ?? 0),
+        targetWeightKg: Number(goal.targetWeightKg),
+        targetBodyFatPercent: goal.targetBodyFatPercent
+          ? Number(goal.targetBodyFatPercent)
+          : null,
+      }
+    : null;
 
   return (
     <AppShell>
     <div className="flex flex-col flex-1 px-4 py-8 max-w-2xl mx-auto w-full">
       {/* ヘッダー */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">ダッシュボード</h1>
-        <p className="text-sm text-zinc-500">{session.user.name}</p>
+        <div className="flex items-center gap-3">
+          <Link href="/graph" className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </Link>
+          <Link href="/settings" className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+            </svg>
+          </Link>
+        </div>
       </div>
 
-      {/* 今日の概要 */}
-      <section className="mb-6">
-        <h2 className="text-sm font-medium text-zinc-500 mb-3">今日の概要</h2>
-        <div className="grid grid-cols-2 gap-3">
-          {/* カロリー（プログレスバー付き） */}
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
-            <p className="text-xs text-zinc-500">摂取カロリー</p>
-            <p className="text-2xl font-bold mt-1">
-              {meals.totalCalories}
-              <span className="text-sm font-normal">kcal</span>
-            </p>
-            <p className="text-xs text-zinc-400 mb-2">
-              / 目標 {goal?.dailyCalorieTarget ?? "---"}kcal
-            </p>
-            {goal?.dailyCalorieTarget && (
-              <div className="h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all ${
-                    meals.totalCalories > goal.dailyCalorieTarget
-                      ? "bg-red-500"
-                      : caloriePercent >= 80
-                        ? "bg-amber-500"
-                        : "bg-green-500"
-                  }`}
-                  style={{
-                    width: `${Math.min((meals.totalCalories / goal.dailyCalorieTarget) * 100, 100)}%`,
-                  }}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* 体重 */}
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
-            <p className="text-xs text-zinc-500">最新の体重</p>
-            <p className="text-2xl font-bold mt-1">
-              {currentWeight ?? "---"}
-              <span className="text-sm font-normal">kg</span>
-            </p>
-            <p className="text-xs text-zinc-400">
-              目標 {goal?.targetWeightKg ?? "---"}kg
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* PFCバランス（棒グラフ風） */}
-      <section className="mb-6">
-        <h2 className="text-sm font-medium text-zinc-500 mb-3">
-          今日のPFCバランス
-        </h2>
-        <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
-          <div className="flex flex-col gap-3">
-            {pfcData.map((pfc) => {
-              const percent = pfc.target
-                ? Math.min(Math.round((pfc.current / pfc.target) * 100), 100)
-                : 0;
-              const isOver = pfc.target ? pfc.current > pfc.target : false;
-              return (
-                <div key={pfc.label} className="flex items-center gap-3">
-                  <span className="text-xs font-medium w-6 text-zinc-500">
-                    {pfc.label}
-                  </span>
-                  <div className="flex-1 h-3 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${isOver ? "bg-red-500" : pfc.color}`}
-                      style={{
-                        width: `${Math.min((pfc.current / (pfc.target || 1)) * 100, 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <span className="text-xs text-zinc-500 w-24 text-right">
-                    {pfc.current}g / {pfc.target}g
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          {pfcData.length === 0 && (
-            <p className="text-sm text-zinc-400 text-center">
-              目標を設定すると表示されます
-            </p>
-          )}
-        </div>
-      </section>
+      {/* 日付ナビ + カロリー/PFC/体重タブ */}
+      <DashboardClient
+        userId={userId}
+        goal={goalData}
+        initialData={{
+          totalCalories: Number(meals.totalCalories),
+          totalProtein: Number(meals.totalProtein),
+          totalFat: Number(meals.totalFat),
+          totalCarb: Number(meals.totalCarb),
+          exerciseCalories,
+          currentWeight,
+          currentBodyFat: latestBodyFat,
+        }}
+        initialDate={today}
+      />
 
       {/* 体重推移ミニグラフ */}
       {weightChartData.length >= 2 && (
         <section className="mb-6">
-          <h2 className="text-sm font-medium text-zinc-500 mb-3">
-            体重推移（直近14日間）
-          </h2>
+          <Link
+            href="/graph"
+            className="flex items-center justify-between mb-3"
+          >
+            <h2 className="text-sm font-medium text-zinc-500">
+              体重推移（直近14日間）
+            </h2>
+            <span className="text-xs text-zinc-400">詳細グラフ &rarr;</span>
+          </Link>
           <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
             <WeightMiniChart
               data={weightChartData}

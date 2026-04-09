@@ -10,6 +10,8 @@ export async function saveWeight(formData: FormData) {
 
   const date = formData.get("date") as string;
   const weightKg = Number(formData.get("weightKg"));
+  const bodyFatRaw = formData.get("bodyFatPercent");
+  const bodyFatPercent = bodyFatRaw ? String(Number(bodyFatRaw)) : null;
 
   if (!date || !weightKg) {
     return { error: "すべての項目を入力してください" };
@@ -19,6 +21,7 @@ export async function saveWeight(formData: FormData) {
     userId: user.id,
     date,
     weightKg: String(weightKg),
+    bodyFatPercent,
   });
 
   return { success: true };
