@@ -531,7 +531,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             >
               <span
                 className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform ${
-                  addToFavorite ? "translate-x-5" : "translate-x-0.5"
+                  addToFavorite ? "translate-x-[22px]" : "translate-x-0.5"
                 }`}
               />
             </button>

@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { users, profiles } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { calcBMR, calcTDEE } from "@/lib/calc";
+import { findUserBySession } from "@/lib/user";
 
 export async function saveProfile(formData: FormData) {
   const session = await auth();
@@ -29,39 +30,23 @@ export async function saveProfile(formData: FormData) {
   const tdee = calcTDEE(bmr, activityLevel);
 
   // ユーザーを取得または作成
-  let userRows = await db
-    .select()
-    .from(users)
-    .where(eq(users.googleId, session.user.id!));
+  let user = await findUserBySession(session.user);
 
-  if (userRows.length === 0) {
-    // googleIdで見つからない場合、emailで既存ユーザーを検索
-    userRows = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, session.user.email!));
-
-    if (userRows.length === 0) {
-      // 完全に新規ユーザー
-      userRows = await db
-        .insert(users)
-        .values({
-          googleId: session.user.id!,
-          email: session.user.email!,
-          name: session.user.name!,
-          avatarUrl: session.user.image,
-        })
-        .returning();
-    } else {
-      // emailは存在するがgoogleIdが異なる → googleIdを更新
-      await db
-        .update(users)
-        .set({ googleId: session.user.id!, name: session.user.name!, avatarUrl: session.user.image })
-        .where(eq(users.email, session.user.email!));
-    }
+  if (!user) {
+    // 完全に新規ユーザー
+    const inserted = await db
+      .insert(users)
+      .values({
+        googleId: null,
+        email: session.user.email!,
+        name: session.user.name ?? session.user.email!,
+        avatarUrl: session.user.image,
+      })
+      .returning();
+    user = inserted[0];
   }
 
-  const userId = userRows[0].id;
+  const userId = user.id;
 
   // プロフィールを取得または作成
   const existingProfile = await db
