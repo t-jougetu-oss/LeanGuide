@@ -382,6 +382,12 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
               step="0.1"
               value={calories}
               onChange={(e) => setCalories(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  (e.target as HTMLInputElement).blur();
+                }
+              }}
               className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="0"
             />

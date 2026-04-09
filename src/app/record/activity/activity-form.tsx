@@ -213,6 +213,12 @@ export function ActivityForm({
               min="1"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  (e.target as HTMLInputElement).blur();
+                }
+              }}
               required
               className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="例：30"
@@ -225,6 +231,12 @@ export function ActivityForm({
               type="number"
               name="manualCalories"
               min="0"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  (e.target as HTMLInputElement).blur();
+                }
+              }}
               className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder={
                 estimatedCalories !== null
