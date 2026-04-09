@@ -119,6 +119,18 @@ export default async function SettingsPage() {
           </div>
           <span className="text-zinc-400">&#8250;</span>
         </Link>
+
+        {/* ヘルプ */}
+        <Link
+          href="/help"
+          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-6 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-xl">&#10068;</span>
+            <span className="text-sm font-medium">使い方ガイド</span>
+          </div>
+          <span className="text-zinc-400">&#8250;</span>
+        </Link>
       </div>
     </AppShell>
   );
