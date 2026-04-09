@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 import { saveMeal } from "./actions";
 import { DateInput } from "../../components/date-input";
 
+// 全角数字・全角ピリオドを半角に変換
+function toHalfWidth(s: string): string {
+  return s
+    .replace(/[０-９]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
+    .replace(/．/g, ".")
+    .replace(/。/g, ".")
+    .replace(/、/g, ".");
+}
+
 function PfcSlider({
   label,
   value,
@@ -23,23 +32,22 @@ function PfcSlider({
   disabled?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   function startEditing() {
     if (disabled) return;
     setEditing(true);
-    setTimeout(() => inputRef.current?.select(), 0);
   }
 
-  function finishEditing() {
+  function commitValue(raw: string) {
     setEditing(false);
-    const trimmed = value.trim();
-    if (trimmed === "" || isNaN(Number(trimmed)) || Number(trimmed) < 0) {
+    const normalized = toHalfWidth(raw.trim());
+    const num = Number(normalized);
+    if (normalized === "" || isNaN(num) || num < 0) {
       onChange("0");
-    } else if (Number(trimmed) > max) {
+    } else if (num > max) {
       onChange(String(max));
     } else {
-      onChange(String(Number(trimmed)));
+      onChange(String(num));
     }
   }
 
@@ -49,15 +57,15 @@ function PfcSlider({
       <div className="flex items-center gap-3">
         {editing ? (
           <input
-            ref={inputRef}
-            type="number"
-            min="0"
-            max={max}
-            step="0.1"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            onBlur={finishEditing}
-            onKeyDown={(e) => e.key === "Enter" && finishEditing()}
+            type="text"
+            defaultValue={Number(value) === 0 ? "" : value}
+            placeholder="0"
+            onBlur={(e) => commitValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+                e.currentTarget.blur();
+              }
+            }}
             className="w-16 rounded-md border border-zinc-300 px-2 py-1 text-sm text-center dark:border-zinc-700 dark:bg-zinc-900"
             autoFocus
           />
