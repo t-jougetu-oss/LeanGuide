@@ -12,6 +12,7 @@ function PfcSlider({
   max,
   onChange,
   hiddenName,
+  disabled,
 }: {
   label: string;
   value: string;
@@ -19,24 +20,31 @@ function PfcSlider({
   max: number;
   onChange: (v: string) => void;
   hiddenName: string;
+  disabled?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function startEditing() {
+    if (disabled) return;
     setEditing(true);
     setTimeout(() => inputRef.current?.select(), 0);
   }
 
   function finishEditing() {
     setEditing(false);
-    const num = Number(value);
-    if (isNaN(num) || num < 0) onChange("0");
-    else if (num > max) onChange(String(max));
+    const trimmed = value.trim();
+    if (trimmed === "" || isNaN(Number(trimmed)) || Number(trimmed) < 0) {
+      onChange("0");
+    } else if (Number(trimmed) > max) {
+      onChange(String(max));
+    } else {
+      onChange(String(Number(trimmed)));
+    }
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className={`flex flex-col gap-1 ${disabled ? "opacity-40 pointer-events-none" : ""}`}>
       <span className="text-sm font-medium">{label}</span>
       <div className="flex items-center gap-3">
         {editing ? (
@@ -57,6 +65,7 @@ function PfcSlider({
           <button
             type="button"
             onClick={startEditing}
+            disabled={disabled}
             className="w-16 rounded-md border border-dashed border-zinc-300 px-2 py-1 text-sm text-center hover:bg-zinc-50 dark:border-zinc-600 dark:hover:bg-zinc-800 transition-colors"
             title="タップして直接入力"
           >
@@ -65,8 +74,9 @@ function PfcSlider({
         )}
         <button
           type="button"
-          onClick={() => onChange(String(Math.max(0, Number(value) - 1)))}
-          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700"
+          disabled={disabled}
+          onClick={() => onChange(String(Math.max(0, (Number(value) || 0) - 1)))}
+          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
         >
           -
         </button>
@@ -75,14 +85,16 @@ function PfcSlider({
           min="0"
           max={max}
           step="0.1"
-          value={value}
+          value={Number(value) || 0}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 accent-zinc-900 dark:accent-white"
+          disabled={disabled}
+          className="flex-1 accent-zinc-900 dark:accent-white disabled:opacity-30"
         />
         <button
           type="button"
-          onClick={() => onChange(String(Math.min(max, Number(value) + 1)))}
-          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700"
+          disabled={disabled}
+          onClick={() => onChange(String(Math.min(max, (Number(value) || 0) + 1)))}
+          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
         >
           +
         </button>
@@ -399,6 +411,12 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
           </div>
 
           {/* PFC スライダー */}
+          {/* PFC スライダー（カロリー未入力時は無効） */}
+          {(!calories || Number(calories) <= 0) && (
+            <p className="text-xs text-zinc-400">
+              カロリーを入力するとPFCを設定できます
+            </p>
+          )}
           <PfcSlider
             label="P (タンパク質)"
             value={protein}
@@ -406,6 +424,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             max={200}
             onChange={setProtein}
             hiddenName="proteinGrams"
+            disabled={!calories || Number(calories) <= 0}
           />
           <PfcSlider
             label="F (脂質)"
@@ -414,6 +433,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             max={200}
             onChange={setFat}
             hiddenName="fatGrams"
+            disabled={!calories || Number(calories) <= 0}
           />
           <PfcSlider
             label="C (炭水化物)"
@@ -422,6 +442,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             max={500}
             onChange={setCarb}
             hiddenName="carbGrams"
+            disabled={!calories || Number(calories) <= 0}
           />
 
           {/* 基準量・分量 */}
