@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* dark: クラスベースに変更（.dark クラスがない限り発火しない） */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -11,8 +14,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
-/* ライトモード固定 — ダークモード無効化 */
 
 body {
   background: var(--background);
