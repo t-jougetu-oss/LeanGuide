@@ -96,10 +96,18 @@ export const mealLogs = pgTable("meal_logs", {
   mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack
   description: text("description").notNull(),
   photoUrl: text("photo_url"),
+  // 分量調整後の値（表示・合計計算に使う実測値）
   calories: integer("calories"),
   proteinGrams: integer("protein_grams"),
   fatGrams: integer("fat_grams"),
   carbGrams: integer("carb_grams"),
+  // 基準量（100%時）の値。編集時にスライダーを復元するために保存
+  basePortion: text("base_portion"), // 例: "100g", "1人前"
+  portionPercent: integer("portion_percent"), // 記録時のスライダー値（10〜200）
+  baseCalories: integer("base_calories"),
+  baseProteinGrams: integer("base_protein_grams"),
+  baseFatGrams: integer("base_fat_grams"),
+  baseCarbGrams: integer("base_carb_grams"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

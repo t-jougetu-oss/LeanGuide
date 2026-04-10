@@ -527,6 +527,8 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
           </div>
 
           <input type="hidden" name="adjustedCalories" value={adjustedCalories} />
+          <input type="hidden" name="basePortion" value={basePortion} />
+          <input type="hidden" name="portionPercent" value={portion} />
           <input type="hidden" name="baseProtein" value={protein} />
           <input type="hidden" name="baseFat" value={fat} />
           <input type="hidden" name="baseCarb" value={carb} />

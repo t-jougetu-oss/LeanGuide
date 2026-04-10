@@ -29,6 +29,13 @@
       "when": 1775797739155,
       "tag": "0003_familiar_steve_rogers",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1775864190995,
+      "tag": "0004_normal_franklin_richards",
+      "breakpoints": true
     }
   ]
 }

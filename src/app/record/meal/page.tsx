@@ -1,22 +1,14 @@
 import { auth } from "@/auth";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
 import { mealLogs, mealFavorites } from "@/db/schema";
 import { eq, and, sql, desc } from "drizzle-orm";
 import { MealForm } from "./meal-form";
+import { MealList } from "./meal-list";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
-
-const mealTypeLabels: Record<string, string> = {
-  meal: "食事",
-  breakfast: "朝食",
-  lunch: "昼食",
-  dinner: "夕食",
-  snack: "間食",
-};
 
 export default async function MealRecordPage() {
   await connection();
@@ -92,32 +84,24 @@ export default async function MealRecordPage() {
               </div>
             </div>
 
-            {/* 記録一覧 */}
-            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
-              {todayMealsList.map((meal) => (
-                <div key={meal.id} className="px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-zinc-500">
-                      {mealTypeLabels[meal.mealType] ?? meal.mealType}
-                    </span>
-                    {meal.calories != null && (
-                      <span className="text-xs text-zinc-400">
-                        {meal.calories}kcal
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm mt-1">{meal.description}</p>
-                  {(meal.proteinGrams != null ||
-                    meal.fatGrams != null ||
-                    meal.carbGrams != null) && (
-                    <p className="text-xs text-zinc-400 mt-1">
-                      P:{meal.proteinGrams ?? 0}g / F:{meal.fatGrams ?? 0}g / C:
-                      {meal.carbGrams ?? 0}g
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
+            {/* 記録一覧（タップで編集モーダル） */}
+            <MealList
+              meals={todayMealsList.map((m) => ({
+                id: m.id,
+                mealType: m.mealType,
+                description: m.description,
+                calories: m.calories,
+                proteinGrams: m.proteinGrams,
+                fatGrams: m.fatGrams,
+                carbGrams: m.carbGrams,
+                basePortion: m.basePortion,
+                portionPercent: m.portionPercent,
+                baseCalories: m.baseCalories,
+                baseProteinGrams: m.baseProteinGrams,
+                baseFatGrams: m.baseFatGrams,
+                baseCarbGrams: m.baseCarbGrams,
+              }))}
+            />
           </section>
         )}
       </div>
