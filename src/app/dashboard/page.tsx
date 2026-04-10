@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
-import { goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
+import { goals, mealLogs, weightLogs, activityLogs, profiles } from "@/db/schema";
 import { eq, and, sql, desc, gte } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
 import { WeightMiniChart } from "./weight-mini-chart";
@@ -17,6 +17,14 @@ export default async function DashboardPage() {
   const user = await findUserBySession(session.user);
   if (!user) redirect("/profile");
   const userId = user.id;
+
+  // 生年月日が未登録なら関所ページへ誘導（既存ユーザーの移行用）
+  const profileRows = await db
+    .select({ birthDate: profiles.birthDate })
+    .from(profiles)
+    .where(eq(profiles.userId, userId));
+  if (profileRows.length === 0) redirect("/profile");
+  if (!profileRows[0].birthDate) redirect("/onboarding/birthdate");
 
   // 目標を取得
   const goalRows = await db

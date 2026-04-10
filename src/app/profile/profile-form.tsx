@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveProfile } from "./actions";
 import { PfcPresetSelector } from "../components/pfc-preset-selector";
+import { calcAge } from "@/lib/calc";
 
 type ExistingProfile = {
   gender: "male" | "female";
-  age: number;
+  birthDate: string | null;
   heightCm: string;
   weightKg: string;
   activityLevel: "sedentary" | "light" | "moderate" | "active" | "very_active";
@@ -35,6 +36,16 @@ export function ProfileForm({
   const [gender, setGender] = useState<"male" | "female">(
     existingProfile?.gender ?? "male"
   );
+  const [birthDate, setBirthDate] = useState<string>(
+    existingProfile?.birthDate ?? ""
+  );
+
+  const previewAge = useMemo(() => {
+    if (!birthDate) return null;
+    const a = calcAge(birthDate);
+    if (Number.isNaN(a) || a < 0 || a > 150) return null;
+    return a;
+  }, [birthDate]);
 
   async function handleSubmit(formData: FormData) {
     setSaving(true);
@@ -76,19 +87,24 @@ export function ProfileForm({
         <input type="hidden" name="gender" value={gender} />
       </div>
 
-      {/* 年齢 */}
+      {/* 生年月日 */}
       <label className="flex flex-col gap-1">
-        <span className="text-sm font-medium">年齢</span>
+        <span className="text-sm font-medium">生年月日</span>
         <input
-          type="number"
-          name="age"
-          min="10"
-          max="120"
-          defaultValue={existingProfile?.age ?? ""}
+          type="date"
+          name="birthDate"
+          min="1900-01-01"
+          max="2020-12-31"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
           required
-          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
-          placeholder="例：30"
+          className="rounded-lg border border-orange-300 px-3 py-2 text-base dark:border-zinc-700 dark:bg-zinc-900"
         />
+        {previewAge !== null && (
+          <span className="text-xs text-zinc-500 mt-0.5">
+            年齢: <span className="font-semibold text-orange-600">{previewAge}歳</span>（自動計算）
+          </span>
+        )}
       </label>
 
       {/* 身長 */}

@@ -1,3 +1,15 @@
+// 生年月日から現在の年齢を算出（誕生日が来ていなければ-1する）
+export function calcAge(birthDate: string | Date): number {
+  const birth = typeof birthDate === "string" ? new Date(birthDate) : birthDate;
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  const m = now.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+}
+
 // 基礎代謝（BMR）をミフリン・セントジョール式で計算
 export function calcBMR(
   gender: "male" | "female",

@@ -40,6 +40,7 @@ export const profiles = pgTable("profiles", {
     .notNull(),
   gender: genderEnum("gender").notNull(),
   age: integer("age").notNull(),
+  birthDate: date("birth_date"), // 生年月日（年齢の真実の値・自動加齢用）
   heightCm: numeric("height_cm").notNull(),
   weightKg: numeric("weight_kg").notNull(),
   bodyFatPercent: numeric("body_fat_percent"), // 体脂肪率

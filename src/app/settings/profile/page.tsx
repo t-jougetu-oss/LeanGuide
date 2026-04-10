@@ -7,6 +7,7 @@ import { profiles } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ProfileForm } from "../profile-form";
 import { AppShell } from "../../components/app-shell";
+import { calcAge } from "@/lib/calc";
 
 const activityLabels: Record<string, string> = {
   sedentary: "ほぼ運動しない",
@@ -40,6 +41,10 @@ export default async function ProfileSettingPage() {
   if (profileRows.length === 0) redirect("/profile");
   const profile = profileRows[0];
 
+  // 生年月日が未登録なら関所ページへ誘導
+  if (!profile.birthDate) redirect("/onboarding/birthdate");
+
+  const displayAge = calcAge(profile.birthDate);
   const heightCm = Number(profile.heightCm);
   const weightKg = Number(profile.weightKg);
   const heightM = heightCm / 100;
@@ -73,7 +78,7 @@ export default async function ProfileSettingPage() {
           </div>
           <div className="flex items-center justify-between px-4 py-3">
             <span className="text-sm text-zinc-500">年齢</span>
-            <span className="text-sm font-medium">{profile.age} 歳</span>
+            <span className="text-sm font-medium">{displayAge} 歳</span>
           </div>
           <div className="flex items-center justify-between px-4 py-3">
             <span className="text-sm text-zinc-500">性別</span>

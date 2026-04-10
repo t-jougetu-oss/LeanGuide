@@ -5,14 +5,14 @@ import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
 import { profiles, goals } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { calcBMR, calcTDEE, calcDailyCalorieTarget, calcPFC } from "@/lib/calc";
+import { calcBMR, calcTDEE, calcDailyCalorieTarget, calcAge } from "@/lib/calc";
 
 export async function saveProfile(formData: FormData) {
   const session = await auth();
   if (!session?.user) return { error: "ログインしてください" };
 
   const gender = formData.get("gender") as "male" | "female";
-  const age = Number(formData.get("age"));
+  const birthDate = (formData.get("birthDate") as string) || "";
   const heightCm = Number(formData.get("heightCm"));
   const weightKg = Number(formData.get("weightKg"));
   const activityLevel = formData.get("activityLevel") as
@@ -26,8 +26,13 @@ export async function saveProfile(formData: FormData) {
   const fatPercent = Number(formData.get("fatPercent")) || 25;
   const carbPercent = Number(formData.get("carbPercent")) || 50;
 
-  if (!gender || !age || !heightCm || !weightKg || !activityLevel) {
+  if (!gender || !birthDate || !heightCm || !weightKg || !activityLevel) {
     return { error: "すべての項目を入力してください" };
+  }
+
+  const age = calcAge(birthDate);
+  if (age < 10 || age > 120) {
+    return { error: "生年月日が正しくありません" };
   }
 
   const bmr = calcBMR(gender, weightKg, heightCm, age);
@@ -43,6 +48,7 @@ export async function saveProfile(formData: FormData) {
     .set({
       gender,
       age,
+      birthDate,
       heightCm: String(heightCm),
       weightKg: String(weightKg),
       activityLevel,

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>モックアップ｜生年月日 初回入力</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        background: #fff7ed;
+        color: #1f2937;
+        -webkit-font-smoothing: antialiased;
+      }
+      input[type="date"] {
+        font-size: 16px; /* iOSズーム防止 */
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- iPhone想定の縦長レイアウト -->
+    <div class="mx-auto max-w-md min-h-screen flex flex-col">
+      <!-- ヘッダー -->
+      <header class="px-6 pt-12 pb-4">
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">L</div>
+          <span class="text-sm font-medium text-orange-700">LeanGuide</span>
+        </div>
+      </header>
+
+      <!-- メインコンテンツ -->
+      <main class="flex-1 px-6 pt-4 pb-8">
+        <h1 class="text-2xl font-bold text-zinc-900 leading-snug">
+          生年月日を<br />教えてください
+        </h1>
+        <p class="mt-3 text-sm text-zinc-600 leading-relaxed">
+          より正確な基礎代謝・カロリー計算のために、生年月日を一度だけ入力してください。
+          <br />
+          <span class="text-orange-700 font-medium">入力後は二度と表示されません。</span>
+        </p>
+
+        <!-- 入力カード -->
+        <section class="mt-8 rounded-2xl bg-white shadow-sm border border-orange-200 p-5">
+          <label class="block">
+            <span class="text-sm font-medium text-zinc-700">生年月日</span>
+            <input
+              type="date"
+              min="1900-01-01"
+              max="2020-12-31"
+              value="1990-01-01"
+              class="mt-2 w-full rounded-xl border border-orange-300 px-4 py-3 text-base text-zinc-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+          </label>
+
+          <!-- 年齢プレビュー -->
+          <div class="mt-4 rounded-xl bg-orange-50 border border-orange-200 px-4 py-3">
+            <div class="flex items-baseline justify-between">
+              <span class="text-xs text-zinc-600">計算される年齢</span>
+              <span class="text-2xl font-bold text-orange-600">36<span class="text-sm font-medium ml-1">歳</span></span>
+            </div>
+          </div>
+
+          <!-- 注意書き -->
+          <p class="mt-4 text-xs text-zinc-500 leading-relaxed">
+            ※ 生年月日は他のユーザーには公開されません。年齢計算のためだけに使用します。
+          </p>
+        </section>
+
+        <!-- 補足情報 -->
+        <div class="mt-6 flex items-start gap-2 text-xs text-zinc-500">
+          <svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>これまでの「年齢」入力値は破棄され、生年月日から自動計算されるようになります。</span>
+        </div>
+      </main>
+
+      <!-- 固定フッター -->
+      <footer class="sticky bottom-0 px-6 pb-8 pt-4 bg-gradient-to-t from-orange-50 via-orange-50/95 to-transparent">
+        <button class="w-full rounded-full bg-orange-500 text-white text-base font-medium py-4 shadow-md active:scale-[0.98] transition">
+          保存して始める
+        </button>
+      </footer>
+    </div>
+  </body>
+</html>
