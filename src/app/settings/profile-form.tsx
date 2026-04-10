@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveProfile } from "./actions";
 import { PfcPresetSelector } from "../components/pfc-preset-selector";
+import { BirthDatePicker } from "../components/birthdate-picker";
 import { calcAge } from "@/lib/calc";
 
 type Profile = {
@@ -94,24 +95,20 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
         </div>
       </fieldset>
 
-      <label className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <span className="text-sm font-medium">生年月日</span>
-        <input
-          type="date"
+        <BirthDatePicker
           name="birthDate"
-          min="1900-01-01"
-          max="2020-12-31"
           value={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
+          onChange={setBirthDate}
           required
-          className="rounded-lg border border-orange-300 px-3 py-2 text-base dark:border-zinc-700 dark:bg-zinc-900"
         />
         {previewAge !== null && (
           <span className="text-xs text-zinc-500 mt-0.5">
             年齢: <span className="font-semibold text-orange-600">{previewAge}歳</span>（自動計算）
           </span>
         )}
-      </label>
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1">

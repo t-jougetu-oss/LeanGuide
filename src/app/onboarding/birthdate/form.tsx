@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { saveBirthDate } from "./actions";
 import { calcAge } from "@/lib/calc";
+import { BirthDatePicker } from "@/app/components/birthdate-picker";
 
 export function BirthDateOnboardingForm() {
   const [birthDate, setBirthDate] = useState<string>("");
@@ -30,19 +31,17 @@ export function BirthDateOnboardingForm() {
   return (
     <form action={handleSubmit}>
       <section className="mt-8 rounded-2xl bg-white shadow-sm border border-orange-200 p-5">
-        <label className="block">
+        <div className="block">
           <span className="text-sm font-medium text-zinc-700">生年月日</span>
-          <input
-            type="date"
-            name="birthDate"
-            min="1900-01-01"
-            max="2020-12-31"
-            value={birthDate}
-            onChange={(e) => setBirthDate(e.target.value)}
-            required
-            className="mt-2 w-full rounded-xl border border-orange-300 px-4 py-3 text-base text-zinc-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
-        </label>
+          <div className="mt-2">
+            <BirthDatePicker
+              name="birthDate"
+              value={birthDate}
+              onChange={setBirthDate}
+              required
+            />
+          </div>
+        </div>
 
         <div className="mt-4 rounded-xl bg-orange-50 border border-orange-200 px-4 py-3">
           <div className="flex items-baseline justify-between">
