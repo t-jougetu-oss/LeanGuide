@@ -4,6 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { saveMeal } from "./actions";
 import { DateInput } from "../../components/date-input";
+import { jstToday } from "@/lib/date";
 
 // 全角数字・全角ピリオドを半角に変換
 function toHalfWidth(s: string): string {
@@ -425,7 +426,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={new Date().toISOString().split("T")[0]}
+              defaultValue={jstToday()}
               required
             />
           </div>

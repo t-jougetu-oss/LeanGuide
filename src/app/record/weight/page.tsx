@@ -10,6 +10,7 @@ import { WeightForm } from "./weight-form";
 import { WeightMiniChart } from "../../dashboard/weight-mini-chart";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
+import { jstDaysAgo } from "@/lib/date";
 
 export default async function WeightRecordPage() {
   await connection();
@@ -27,16 +28,15 @@ export default async function WeightRecordPage() {
     .where(eq(goals.userId, userId));
   const goal = goalRows.length > 0 ? goalRows[0] : null;
 
-  // 直近14日間の体重記録
-  const fourteenDaysAgo = new Date();
-  fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+  // 直近14日間の体重記録（JST）
+  const fourteenDaysAgoStr = jstDaysAgo(14);
   const recentWeights = await db
     .select()
     .from(weightLogs)
     .where(
       and(
         eq(weightLogs.userId, userId),
-        gte(weightLogs.date, fourteenDaysAgo.toISOString().split("T")[0])
+        gte(weightLogs.date, fourteenDaysAgoStr)
       )
     )
     .orderBy(sql`${weightLogs.date} asc`);
@@ -46,11 +46,10 @@ export default async function WeightRecordPage() {
     weight: Number(w.weightKg),
   }));
 
-  // 直近7日間の一覧用
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  // 直近7日間の一覧用（JST）
+  const sevenDaysAgoStr = jstDaysAgo(7);
   const last7 = recentWeights.filter(
-    (w) => w.date >= sevenDaysAgo.toISOString().split("T")[0]
+    (w) => w.date >= sevenDaysAgoStr
   );
 
   return (

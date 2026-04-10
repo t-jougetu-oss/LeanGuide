@@ -136,7 +136,7 @@ export function MealList({ meals }: { meals: MealListItem[] }) {
       {/* 編集モーダル（ボトムシート） */}
       {editing && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center"
+          className="fixed inset-0 z-[60] flex items-end justify-center"
           onClick={closeModal}
         >
           {/* 背景オーバーレイ */}
@@ -164,7 +164,7 @@ export function MealList({ meals }: { meals: MealListItem[] }) {
               </button>
             </div>
 
-            <div className="px-5 py-4 space-y-5 max-h-[70vh] overflow-y-auto">
+            <div className="px-5 py-4 space-y-5 max-h-[75vh] overflow-y-auto pb-[calc(1rem+env(safe-area-inset-bottom))]">
               {/* 食品情報 */}
               <div className="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100 dark:bg-zinc-800 dark:border-zinc-700">
                 <div>

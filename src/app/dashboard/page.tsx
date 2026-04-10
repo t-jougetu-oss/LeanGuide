@@ -10,6 +10,7 @@ import { analyzeWeeklyData } from "@/lib/analysis";
 import { WeightMiniChart } from "./weight-mini-chart";
 import { DashboardClient } from "./dashboard-client";
 import { AppShell } from "../components/app-shell";
+import { jstToday, jstDaysAgo } from "@/lib/date";
 
 export default async function DashboardPage() {
   await connection();
@@ -35,8 +36,8 @@ export default async function DashboardPage() {
     .where(eq(goals.userId, userId));
   const goal = goalRows.length > 0 ? goalRows[0] : null;
 
-  // 今日の日付
-  const today = new Date().toISOString().split("T")[0];
+  // 今日の日付（JST）
+  const today = jstToday();
 
   // 今日の食事記録を集計
   const todayMeals = await db
@@ -62,15 +63,14 @@ export default async function DashboardPage() {
   const exerciseCalories = Number(todayExercise[0]?.totalBurned ?? 0);
 
   // 直近14日間の体重記録
-  const fourteenDaysAgo = new Date();
-  fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+  const fourteenDaysAgoStr = jstDaysAgo(14);
   const recentWeights = await db
     .select()
     .from(weightLogs)
     .where(
       and(
         eq(weightLogs.userId, userId),
-        gte(weightLogs.date, fourteenDaysAgo.toISOString().split("T")[0])
+        gte(weightLogs.date, fourteenDaysAgoStr)
       )
     )
     .orderBy(sql`${weightLogs.date} asc`);
@@ -91,9 +91,7 @@ export default async function DashboardPage() {
   }));
 
   // 分析サマリ
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split("T")[0];
+  const sevenDaysAgoStr = jstDaysAgo(7);
 
   const recentMeals = await db
     .select({

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveWeight } from "./actions";
 import { DateInput } from "../../components/date-input";
+import { jstToday } from "@/lib/date";
 
 export function WeightForm() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export function WeightForm() {
         <span className="text-sm font-medium">日付</span>
         <DateInput
           name="date"
-          defaultValue={new Date().toISOString().split("T")[0]}
+          defaultValue={jstToday()}
           required
         />
       </div>

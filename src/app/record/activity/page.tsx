@@ -9,6 +9,7 @@ import { eq, and, sql, desc } from "drizzle-orm";
 import { ActivityForm } from "./activity-form";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
+import { jstToday } from "@/lib/date";
 
 export default async function ActivityRecordPage() {
   await connection();
@@ -27,7 +28,7 @@ export default async function ActivityRecordPage() {
 
   const weightKg = profileRows.length > 0 ? Number(profileRows[0].weightKg) : 65;
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = jstToday();
 
   // 今日の活動記録
   const todayActivities = await db

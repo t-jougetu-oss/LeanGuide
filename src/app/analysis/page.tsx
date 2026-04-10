@@ -8,6 +8,7 @@ import { profiles, goals, mealLogs, weightLogs, activityLogs } from "@/db/schema
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { analyzeWeeklyData } from "@/lib/analysis";
 import { AppShell } from "../components/app-shell";
+import { jstToday, jstDaysAgo } from "@/lib/date";
 
 export default async function AnalysisPage() {
   await connection();
@@ -36,12 +37,9 @@ export default async function AnalysisPage() {
 
   const goal = goalRows[0];
 
-  // 直近7日間のデータ取得
-  const today = new Date();
-  const sevenDaysAgo = new Date(today);
-  sevenDaysAgo.setDate(today.getDate() - 6);
-  const startDate = sevenDaysAgo.toISOString().split("T")[0];
-  const endDate = today.toISOString().split("T")[0];
+  // 直近7日間のデータ取得（JST）
+  const startDate = jstDaysAgo(6);
+  const endDate = jstToday();
 
   // 食事データ（日ごとに集計）
   const mealData = await db
@@ -96,13 +94,13 @@ export default async function AnalysisPage() {
     .where(eq(profiles.userId, userId));
   const tdee = profileRows.length > 0 ? Number(profileRows[0].tdee) : undefined;
 
-  // 日ごとのデータを統合
+  // 日ごとのデータを統合（JST基準）
   const dailyData = [];
   for (let i = 0; i < 7; i++) {
-    const d = new Date(sevenDaysAgo);
-    d.setDate(d.getDate() + i);
-    const dateStr = d.toISOString().split("T")[0];
-    const dayOfWeek = d.getDay();
+    const dateStr = jstDaysAgo(6 - i);
+    const [y, m, day] = dateStr.split("-").map(Number);
+    // UTC で Date を作って getUTCDay すれば TZ の影響を受けない
+    const dayOfWeek = new Date(Date.UTC(y, m - 1, day)).getUTCDay();
 
     const meal = mealData.find((m) => m.date === dateStr);
     const weight = weightData.find((w) => w.date === dateStr);

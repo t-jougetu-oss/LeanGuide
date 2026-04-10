@@ -9,6 +9,7 @@ import { MealForm } from "./meal-form";
 import { MealList } from "./meal-list";
 import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
+import { jstToday } from "@/lib/date";
 
 export default async function MealRecordPage() {
   await connection();
@@ -26,7 +27,7 @@ export default async function MealRecordPage() {
     .where(eq(mealFavorites.userId, userId))
     .orderBy(desc(mealFavorites.createdAt));
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = jstToday();
 
   // 今日の食事記録を取得
   const todayMealsList = await db

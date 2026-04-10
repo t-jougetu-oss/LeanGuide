@@ -7,6 +7,7 @@ import { db } from "@/db";
 import { goals, mealLogs, weightLogs, activityLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { AppShell } from "../components/app-shell";
+import { jstToday, jstDaysAgo } from "@/lib/date";
 
 export default async function ReviewPage() {
   await connection();
@@ -23,12 +24,9 @@ export default async function ReviewPage() {
     .where(eq(goals.userId, userId));
   const goal = goalRows.length > 0 ? goalRows[0] : null;
 
-  // 直近7日間
-  const today = new Date();
-  const sevenDaysAgo = new Date(today);
-  sevenDaysAgo.setDate(today.getDate() - 6);
-  const startDate = sevenDaysAgo.toISOString().split("T")[0];
-  const endDate = today.toISOString().split("T")[0];
+  // 直近7日間（JST）
+  const startDate = jstDaysAgo(6);
+  const endDate = jstToday();
 
   // 食事の週間合計
   const mealSummary = await db

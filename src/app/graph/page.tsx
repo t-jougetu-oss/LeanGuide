@@ -7,6 +7,7 @@ import { weightLogs, mealLogs } from "@/db/schema";
 import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { GraphView } from "./graph-view";
 import { AppShell } from "../components/app-shell";
+import { jstToday, jstDaysAgo } from "@/lib/date";
 
 export default async function GraphPage() {
   await connection();
@@ -17,11 +18,9 @@ export default async function GraphPage() {
   if (!user) redirect("/profile");
   const userId = user.id;
 
-  // 直近30日間のデータをデフォルトで取得
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  const startDate = thirtyDaysAgo.toISOString().split("T")[0];
-  const endDate = new Date().toISOString().split("T")[0];
+  // 直近30日間のデータをデフォルトで取得（JST）
+  const startDate = jstDaysAgo(30);
+  const endDate = jstToday();
 
   // 体重データ
   const weights = await db

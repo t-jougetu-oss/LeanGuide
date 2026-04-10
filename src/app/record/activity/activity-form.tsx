@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { saveActivity } from "./actions";
 import { DateInput } from "../../components/date-input";
+import { jstToday } from "@/lib/date";
 
 const activityPresets = [
   { value: "walking", label: "ウォーキング", metPerMin: 3.5 },
@@ -143,7 +144,7 @@ export function ActivityForm({
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={new Date().toISOString().split("T")[0]}
+              defaultValue={jstToday()}
               required
             />
           </div>
