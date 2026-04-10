@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
@@ -10,6 +11,7 @@ import { AppShell } from "../../components/app-shell";
 import { RecordTabs } from "../../components/record-tabs";
 
 export default async function ActivityRecordPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
 

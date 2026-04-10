@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { findUserBySession } from "@/lib/user";
 import { db } from "@/db";
@@ -8,6 +9,7 @@ import { GraphView } from "./graph-view";
 import { AppShell } from "../components/app-shell";
 
 export default async function GraphPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
 

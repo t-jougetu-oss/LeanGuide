@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
@@ -9,6 +10,7 @@ import { analyzeWeeklyData } from "@/lib/analysis";
 import { AppShell } from "../components/app-shell";
 
 export default async function AnalysisPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
 

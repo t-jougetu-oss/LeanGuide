@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
@@ -11,6 +12,7 @@ import { DashboardClient } from "./dashboard-client";
 import { AppShell } from "../components/app-shell";
 
 export default async function DashboardPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
 

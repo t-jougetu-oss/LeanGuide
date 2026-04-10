@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { findUserBySession } from "@/lib/user";
@@ -18,6 +19,7 @@ const mealTypeLabels: Record<string, string> = {
 };
 
 export default async function MealRecordPage() {
+  await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
 
