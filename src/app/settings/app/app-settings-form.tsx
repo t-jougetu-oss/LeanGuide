@@ -87,7 +87,7 @@ export function AppSettingsForm({
       <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800 mb-8">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm">バージョン</span>
-          <span className="text-sm text-zinc-500">1.0.0</span>
+          <span className="text-sm text-zinc-500">1.1.0</span>
         </div>
       </div>
 
