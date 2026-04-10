@@ -21,7 +21,7 @@ export function DateInput({
     <button
       type="button"
       onClick={() => inputRef.current?.showPicker()}
-      className="relative w-full flex items-center gap-2 rounded-lg border border-zinc-300 px-3 py-2 text-left dark:border-zinc-700 dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+      className="relative w-full flex items-center gap-2 rounded-lg border border-orange-300 px-3 py-2 text-left dark:border-zinc-700 dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
     >
       <svg
         width="18"

@@ -66,7 +66,7 @@ export default async function ActivityRecordPage() {
             </h2>
 
             {/* 合計 */}
-            <div className="rounded-xl border border-zinc-200 p-4 mb-3 dark:border-zinc-800">
+            <div className="rounded-xl border border-orange-200 p-4 mb-3 dark:border-zinc-800">
               <p className="text-xs text-zinc-500 mb-2">本日の合計</p>
               <div className="grid grid-cols-2 gap-2 text-center">
                 <div>
@@ -81,7 +81,7 @@ export default async function ActivityRecordPage() {
             </div>
 
             {/* 一覧 */}
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
               {todayActivities.map((activity) => (
                 <div
                   key={activity.id}

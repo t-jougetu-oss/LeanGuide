@@ -191,20 +191,20 @@ export function GraphView({
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            className="flex-1 rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
           />
           <span className="text-zinc-400">&mdash;</span>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            className="flex-1 rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
           />
         </div>
       </div>
 
       {/* グラフ */}
-      <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+      <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
         {!hasData || activeGroups.size === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="text-4xl mb-3 text-zinc-300">&#128200;</div>
@@ -294,7 +294,7 @@ export function GraphView({
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 isActive
                   ? "text-white"
-                  : "border border-zinc-300 text-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                  : "border border-orange-300 text-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
               }`}
               style={isActive ? { backgroundColor: color } : undefined}
             >

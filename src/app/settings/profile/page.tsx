@@ -66,7 +66,7 @@ export default async function ProfileSettingPage() {
           <h1 className="text-xl font-bold text-blue-600">プロフィール</h1>
         </div>
 
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+        <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
           <div className="flex items-center justify-between px-4 py-3">
             <span className="text-sm text-zinc-500">身長</span>
             <span className="text-sm font-medium">{heightCm} cm</span>

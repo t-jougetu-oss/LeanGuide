@@ -53,7 +53,7 @@ export function HomeTabs({
             onClick={() => setTab(t.key)}
             className={`flex-1 h-1 rounded-full transition-colors ${
               tab === t.key
-                ? "bg-zinc-900 dark:bg-white"
+                ? "bg-amber-600 dark:bg-white"
                 : "bg-zinc-200 dark:bg-zinc-700"
             }`}
           />
@@ -61,7 +61,7 @@ export function HomeTabs({
       </div>
 
       {/* タブコンテンツ */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-5">
+      <div className="rounded-xl border border-orange-200 dark:border-zinc-800 p-5">
         {tab === "calorie" && (
           <div>
             <h2 className="text-center text-sm font-medium mb-4">カロリー</h2>
@@ -119,7 +119,7 @@ export function HomeTabs({
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {/* 体重 */}
-              <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 text-center">
+              <div className="rounded-lg border border-orange-200 dark:border-zinc-700 p-3 text-center">
                 <p className="text-2xl font-bold">
                   {currentWeight ?? "---"}
                   <span className="text-sm font-normal"> kg</span>
@@ -143,7 +143,7 @@ export function HomeTabs({
               </div>
 
               {/* 体脂肪 */}
-              <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 text-center">
+              <div className="rounded-lg border border-orange-200 dark:border-zinc-700 p-3 text-center">
                 <p className="text-2xl font-bold">
                   {currentBodyFat ?? "---"}
                   <span className="text-sm font-normal"> %</span>

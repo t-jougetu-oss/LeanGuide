@@ -63,7 +63,7 @@ export default async function Home() {
           ].map((feature) => (
             <div
               key={feature.text}
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 px-4 py-3 text-left dark:border-zinc-800"
+              className="flex items-center gap-3 rounded-xl border border-orange-200 px-4 py-3 text-left dark:border-zinc-800"
             >
               <span className="text-xl">{feature.icon}</span>
               <span className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -78,7 +78,7 @@ export default async function Home() {
             <div className="flex flex-col items-center gap-3">
               <Link
                 href="/dashboard"
-                className="w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                className="w-full rounded-full bg-orange-500 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-orange-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
                 ダッシュボードへ
               </Link>
@@ -102,7 +102,7 @@ export default async function Home() {
           ) : (
             <Link
               href="/login"
-              className="w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-medium text-white text-center transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200 block"
+              className="w-full rounded-full bg-orange-500 px-6 py-3.5 text-sm font-medium text-white text-center transition-colors hover:bg-orange-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200 block"
             >
               ログイン / 新規登録
             </Link>

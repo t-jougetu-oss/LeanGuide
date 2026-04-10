@@ -57,7 +57,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
   }
 
   return (
-    <form action={handleSubmit} className="mt-4 flex flex-col gap-4 border-t border-zinc-200 pt-4 dark:border-zinc-700">
+    <form action={handleSubmit} className="mt-4 flex flex-col gap-4 border-t border-orange-200 pt-4 dark:border-zinc-700">
       <fieldset>
         <legend className="text-sm font-medium mb-2">性別</legend>
         <div className="flex gap-4">
@@ -92,7 +92,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
           max="120"
           defaultValue={existingProfile.age}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
         />
       </label>
 
@@ -107,7 +107,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
             step="0.1"
             defaultValue={existingProfile.heightCm}
             required
-            className="rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            className="rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
           />
         </label>
         <label className="flex flex-col gap-1">
@@ -120,7 +120,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
             step="0.1"
             defaultValue={existingProfile.weightKg}
             required
-            className="rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            className="rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
           />
         </label>
       </div>
@@ -131,7 +131,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
           name="activityLevel"
           defaultValue={existingProfile.activityLevel}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
         >
           {Object.entries(activityLabels).map(([value, label]) => (
             <option key={value} value={value}>
@@ -142,7 +142,7 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
       </label>
 
       {/* PFCバランス */}
-      <div className="border-t border-zinc-200 pt-4 mt-1">
+      <div className="border-t border-orange-200 pt-4 mt-1">
         <PfcPresetSelector
           defaultP={existingProfile.proteinPercent ?? 25}
           defaultF={existingProfile.fatPercent ?? 25}
@@ -156,14 +156,14 @@ export function ProfileForm({ existingProfile }: { existingProfile: Profile }) {
         <button
           type="submit"
           disabled={saving}
-          className="rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="rounded-full bg-orange-500 px-5 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {saving ? "保存中..." : "保存"}
         </button>
         <button
           type="button"
           onClick={() => setEditing(false)}
-          className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className="rounded-full border border-orange-300 px-5 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
         >
           キャンセル
         </button>

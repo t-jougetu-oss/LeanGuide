@@ -76,7 +76,7 @@ export default function HelpPage() {
 
         {/* グラフ */}
         <Section title="7. グラフ">
-          <p>ダッシュボード右上のグラフアイコンからアクセス。期間を指定して、P/F/C・kcal・kg・%のデータを表示できます。</p>
+          <p>画面下部のメニュー「グラフ」からアクセス。期間を指定して、P/F/C・kcal・kg・%のデータを表示できます。</p>
           <p className="mt-2">最大2グループまで同時に表示可能です（P/F/Cはセット）。</p>
         </Section>
 

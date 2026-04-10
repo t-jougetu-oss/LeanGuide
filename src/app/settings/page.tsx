@@ -75,7 +75,7 @@ export default async function SettingsPage() {
         {/* プロフィール設定 */}
         <Link
           href="/settings/profile"
-          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-between rounded-xl border border-orange-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-foreground"
         >
           <div className="flex items-center gap-3">
             <span className="text-xl">&#128100;</span>
@@ -87,7 +87,7 @@ export default async function SettingsPage() {
         {/* ボディメイク設定 */}
         <Link
           href="/settings/bodymake"
-          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-between rounded-xl border border-orange-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-foreground"
         >
           <div className="flex items-center gap-3">
             <span className="text-xl">&#127947;</span>
@@ -99,7 +99,7 @@ export default async function SettingsPage() {
         {/* リマインダー設定 */}
         <Link
           href="/settings/reminder"
-          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-between rounded-xl border border-orange-200 p-4 mb-3 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-foreground"
         >
           <div className="flex items-center gap-3">
             <span className="text-xl">&#128203;</span>
@@ -111,7 +111,7 @@ export default async function SettingsPage() {
         {/* アプリ設定 */}
         <Link
           href="/settings/app"
-          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-6 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-between rounded-xl border border-orange-200 p-4 mb-6 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-foreground"
         >
           <div className="flex items-center gap-3">
             <span className="text-xl">&#9881;</span>
@@ -123,7 +123,7 @@ export default async function SettingsPage() {
         {/* ヘルプ */}
         <Link
           href="/help"
-          className="flex items-center justify-between rounded-xl border border-zinc-200 p-4 mb-6 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-between rounded-xl border border-orange-200 p-4 mb-6 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-foreground"
         >
           <div className="flex items-center gap-3">
             <span className="text-xl">&#10068;</span>

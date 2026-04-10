@@ -44,9 +44,27 @@ const navItems = [
     ),
   },
   {
+    href: "/graph",
+    label: "グラフ",
+    icon: (active: boolean) => (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={active ? "2.5" : "1.5"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    ),
+  },
+  {
     href: "/analysis",
     label: "分析",
-    matchPrefixes: ["/analysis", "/review", "/graph"],
+    matchPrefixes: ["/analysis", "/review"],
     icon: (active: boolean) => (
       <svg
         width="24"
@@ -69,6 +87,7 @@ const navItems = [
   {
     href: "/settings",
     label: "設定",
+    matchPrefixes: ["/settings"],
     icon: (active: boolean) => (
       <svg
         width="24"
@@ -91,7 +110,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200 bg-white/80 backdrop-blur-lg dark:border-zinc-800 dark:bg-zinc-950/80">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-orange-500">
       <div className="flex items-center justify-around max-w-2xl mx-auto px-2 pb-[env(safe-area-inset-bottom)]">
         {navItems.map((item) => {
           const isActive =
@@ -105,8 +124,8 @@ export function BottomNav() {
               href={item.href}
               className={`flex flex-col items-center gap-0.5 py-2 px-3 min-w-[4rem] transition-colors ${
                 isActive
-                  ? "text-zinc-900 dark:text-white"
-                  : "text-zinc-400 dark:text-zinc-500"
+                  ? "text-white"
+                  : "text-orange-200"
               }`}
             >
               {item.icon(isActive)}

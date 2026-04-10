@@ -66,7 +66,7 @@ function PfcSlider({
                 e.currentTarget.blur();
               }
             }}
-            className="w-16 rounded-md border border-zinc-300 px-2 py-1 text-sm text-center dark:border-zinc-700 dark:bg-zinc-900"
+            className="w-16 rounded-md border border-orange-300 px-2 py-1 text-sm text-center dark:border-zinc-700 dark:bg-zinc-900"
             autoFocus
           />
         ) : (
@@ -74,7 +74,7 @@ function PfcSlider({
             type="button"
             onClick={startEditing}
             disabled={disabled}
-            className="w-16 rounded-md border border-dashed border-zinc-300 px-2 py-1 text-sm text-center hover:bg-zinc-50 dark:border-zinc-600 dark:hover:bg-zinc-800 transition-colors"
+            className="w-16 rounded-md border border-dashed border-orange-300 px-2 py-1 text-sm text-center hover:bg-zinc-50 dark:border-zinc-600 dark:hover:bg-zinc-800 transition-colors"
             title="タップして直接入力"
           >
             {adjustedValue}
@@ -84,7 +84,7 @@ function PfcSlider({
           type="button"
           disabled={disabled}
           onClick={() => onChange(String(Math.max(0, (Number(value) || 0) - 1)))}
-          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
+          className="w-8 h-8 rounded-full border border-orange-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
         >
           -
         </button>
@@ -96,13 +96,13 @@ function PfcSlider({
           value={Number(value) || 0}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
-          className="flex-1 accent-zinc-900 dark:accent-white disabled:opacity-30"
+          className="flex-1  disabled:opacity-30"
         />
         <button
           type="button"
           disabled={disabled}
           onClick={() => onChange(String(Math.min(max, (Number(value) || 0) + 1)))}
-          className="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
+          className="w-8 h-8 rounded-full border border-orange-300 flex items-center justify-center text-zinc-500 dark:border-zinc-700 disabled:opacity-30"
         >
           +
         </button>
@@ -234,7 +234,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
   return (
     <div className="flex flex-col gap-5">
       {/* タブ */}
-      <div className="flex rounded-lg border border-zinc-300 dark:border-zinc-700 overflow-hidden">
+      <div className="flex rounded-lg border border-orange-300 dark:border-zinc-700 overflow-hidden">
         {(["search", "direct", "favorites"] as const).map((t) => (
           <button
             key={t}
@@ -242,7 +242,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             onClick={() => setTab(t)}
             className={`flex-1 py-2 text-sm font-medium transition-colors ${
               tab === t
-                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+                ? "bg-amber-600 text-white dark:bg-white dark:text-zinc-900"
                 : "hover:bg-zinc-50 dark:hover:bg-zinc-800"
             }`}
           >
@@ -261,13 +261,13 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               placeholder="検索文字を入力する"
-              className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="flex-1 rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
             />
             <button
               type="button"
               onClick={handleSearch}
               disabled={searching}
-              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-zinc-900 disabled:opacity-50"
+              className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-zinc-900 disabled:opacity-50"
             >
               {searching ? "..." : "検索"}
             </button>
@@ -279,7 +279,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
           </p>
 
           {searchResults.length > 0 ? (
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800 max-h-80 overflow-y-auto">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800 max-h-80 overflow-y-auto">
               {searchResults.map((item) => (
                 <button
                   key={item.id}
@@ -327,7 +327,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             value={favSearch}
             onChange={(e) => setFavSearch(e.target.value)}
             placeholder="検索文字を入力する"
-            className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           />
           {filteredFavorites.length === 0 ? (
             <p className="text-sm text-zinc-400 text-center py-8">
@@ -336,7 +336,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
               記録時に「お気に入りに追加」をオンにすると登録されます。
             </p>
           ) : (
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
               {filteredFavorites.map((fav) => (
                 <button
                   key={fav.id}
@@ -368,7 +368,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
               value={foodName}
               onChange={(e) => setFoodName(e.target.value)}
               required
-              className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="例：ご飯、味噌汁、焼き魚"
             />
           </label>
@@ -376,19 +376,25 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
           <label className="flex flex-col gap-1">
             <span className="text-sm font-medium">カロリー</span>
             <input
-              type="number"
+              type="text"
+              inputMode="decimal"
               name="calories"
-              min="0"
-              step="0.1"
               value={calories}
-              onChange={(e) => setCalories(e.target.value)}
+              onChange={(e) => {
+                const v = e.target.value
+                  .replace(/[０-９]/g, (ch) =>
+                    String.fromCharCode(ch.charCodeAt(0) - 0xfee0)
+                  )
+                  .replace(/[^0-9.]/g, "");
+                setCalories(v);
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
                   (e.target as HTMLInputElement).blur();
                 }
               }}
-              className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="0"
             />
           </label>
@@ -404,8 +410,8 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
                   onClick={() => setMealType(value)}
                   className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
                     mealType === value
-                      ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                      : "border border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                      ? "bg-amber-600 text-white dark:bg-white dark:text-zinc-900"
+                      : "border border-orange-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {label}
@@ -476,7 +482,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
                 </span>
               </span>
               {isFromFavorite ? (
-                <p className="rounded-lg border border-zinc-200 bg-zinc-100 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900 text-zinc-500">
+                <p className="rounded-lg border border-orange-200 bg-zinc-100 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900 text-zinc-500">
                   {basePortion || "未設定"}
                 </p>
               ) : (
@@ -484,7 +490,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
                   type="text"
                   value={basePortion}
                   onChange={(e) => setBasePortion(e.target.value)}
-                  className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+                  className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
                   placeholder="100g"
                 />
               )}
@@ -506,7 +512,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
                   step="10"
                   value={portion}
                   onChange={(e) => setPortion(e.target.value)}
-                  className="flex-1 accent-zinc-900 dark:accent-white"
+                  className="flex-1 "
                 />
                 <span className="text-sm font-bold w-14 text-right">
                   {portion}%
@@ -554,7 +560,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
           <button
             type="submit"
             disabled={saving}
-            className="mt-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="mt-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             {saving ? "保存中..." : "保存"}
           </button>

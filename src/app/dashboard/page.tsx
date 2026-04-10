@@ -175,16 +175,10 @@ export default async function DashboardPage() {
       {/* 体重推移ミニグラフ */}
       {weightChartData.length >= 2 && (
         <section className="mb-6">
-          <Link
-            href="/graph"
-            className="flex items-center justify-between mb-3"
-          >
-            <h2 className="text-sm font-medium text-zinc-500">
-              体重推移（直近14日間）
-            </h2>
-            <span className="text-xs text-zinc-400">詳細グラフ &rarr;</span>
-          </Link>
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+          <h2 className="text-sm font-medium text-zinc-500 mb-3">
+            体重推移（直近14日間）
+          </h2>
+          <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
             <WeightMiniChart
               data={weightChartData}
               targetWeight={goal ? Number(goal.targetWeightKg) : undefined}
@@ -203,7 +197,7 @@ export default async function DashboardPage() {
                 ? "border-amber-300 dark:border-amber-800"
                 : analysisSummary.type === "success"
                   ? "border-green-300 dark:border-green-800"
-                  : "border-zinc-200 dark:border-zinc-800"
+                  : "border-orange-200 dark:border-zinc-800"
             }`}
           >
             <p className="text-xs text-zinc-500 mb-1">最新の分析</p>
@@ -221,21 +215,21 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-3 gap-3">
           <Link
             href="/record/meal"
-            className="rounded-xl border border-zinc-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+            className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">🍽</span>
             <span className="text-xs font-medium">食事</span>
           </Link>
           <Link
             href="/record/weight"
-            className="rounded-xl border border-zinc-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+            className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">⚖️</span>
             <span className="text-xs font-medium">体重</span>
           </Link>
           <Link
             href="/record/activity"
-            className="rounded-xl border border-zinc-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+            className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">🏃</span>
             <span className="text-xs font-medium">活動</span>

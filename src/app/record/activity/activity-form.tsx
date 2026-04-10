@@ -84,13 +84,13 @@ export function ActivityForm({
   return (
     <div className="flex flex-col gap-5">
       {/* タブ */}
-      <div className="flex rounded-lg border border-zinc-300 dark:border-zinc-700 overflow-hidden">
+      <div className="flex rounded-lg border border-orange-300 dark:border-zinc-700 overflow-hidden">
         <button
           type="button"
           onClick={() => setTab("direct")}
           className={`flex-1 py-2 text-sm font-medium transition-colors ${
             tab === "direct"
-              ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+              ? "bg-amber-600 text-white dark:bg-white dark:text-zinc-900"
               : "hover:bg-zinc-50 dark:hover:bg-zinc-800"
           }`}
         >
@@ -101,7 +101,7 @@ export function ActivityForm({
           onClick={() => setTab("favorites")}
           className={`flex-1 py-2 text-sm font-medium transition-colors ${
             tab === "favorites"
-              ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+              ? "bg-amber-600 text-white dark:bg-white dark:text-zinc-900"
               : "hover:bg-zinc-50 dark:hover:bg-zinc-800"
           }`}
         >
@@ -118,7 +118,7 @@ export function ActivityForm({
               記録時に「お気に入りに追加」をオンにすると登録されます。
             </p>
           ) : (
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
               {favorites.map((fav) => (
                 <button
                   key={fav.id}
@@ -162,8 +162,8 @@ export function ActivityForm({
                   }}
                   className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
                     activityType === preset.value && !customName
-                      ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-900"
-                      : "border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                      ? "border-amber-600 bg-amber-600 text-white dark:border-white dark:bg-white dark:text-zinc-900"
+                      : "border-orange-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {preset.label}
@@ -177,7 +177,7 @@ export function ActivityForm({
                 }}
                 className={`rounded-lg border px-3 py-2 text-sm transition-colors flex items-center justify-center gap-1 ${
                   customName
-                    ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-900"
+                    ? "border-amber-600 bg-amber-600 text-white dark:border-white dark:bg-white dark:text-zinc-900"
                     : "border-dashed border-zinc-400 text-zinc-400 hover:bg-zinc-50 dark:border-zinc-500 dark:hover:bg-zinc-800"
                 }`}
               >
@@ -194,7 +194,7 @@ export function ActivityForm({
                 value={customName.trim()}
                 onChange={(e) => setCustomName(e.target.value)}
                 placeholder="運動名を入力（例: バドミントン）"
-                className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+                className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
                 autoFocus
               />
             )}
@@ -220,7 +220,7 @@ export function ActivityForm({
                 }
               }}
               required
-              className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="例：30"
             />
           </label>
@@ -237,7 +237,7 @@ export function ActivityForm({
                   (e.target as HTMLInputElement).blur();
                 }
               }}
-              className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder={
                 estimatedCalories !== null
                   ? `推定: ${estimatedCalories}`
@@ -269,7 +269,7 @@ export function ActivityForm({
               rows={2}
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+              className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
               placeholder="メモ（任意）"
             />
           </label>
@@ -298,7 +298,7 @@ export function ActivityForm({
           <button
             type="submit"
             disabled={saving}
-            className="mt-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="mt-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
             {saving ? "保存中..." : "記録する"}
           </button>

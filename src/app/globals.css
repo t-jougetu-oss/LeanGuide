@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
+  --background: #FFF8F0;
   --foreground: #171717;
 }
 
@@ -25,7 +25,7 @@ body {
 }
 
 /* フォーム入力のiOS最適化 */
-input,
+input:not([type="range"]),
 select,
 textarea {
   font-size: 16px; /* iOSのズーム防止 */
@@ -39,6 +39,35 @@ input[type="number"] {
 /* スムーズなトランジション */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* スライダーのトラックを見やすく */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: transparent;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #fdba74;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ea580c;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-top: -7px;
 }
 
 /* プログレスバーアニメーション */

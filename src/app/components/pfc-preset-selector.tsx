@@ -88,8 +88,8 @@ export function PfcPresetSelector({ defaultP = 25, defaultF = 25, defaultC = 50 
             onClick={() => applyPreset(preset)}
             className={`rounded-xl border px-3 py-2.5 text-center transition-colors ${
               activePreset === i
-                ? "border-zinc-900 bg-zinc-900 text-white"
-                : "border-zinc-300 hover:bg-zinc-50"
+                ? "border-amber-600 bg-amber-600 text-white"
+                : "border-orange-300 hover:bg-zinc-50"
             }`}
           >
             <span className="text-xs font-semibold block">{preset.label}</span>

@@ -96,7 +96,7 @@ export function GoalForm({
           step="0.1"
           defaultValue={existingGoal?.targetWeightKg ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：60.0"
         />
       </label>
@@ -112,7 +112,7 @@ export function GoalForm({
       </div>
 
       {/* PFCバランス */}
-      <div className="border-t border-zinc-200 pt-4 mt-1">
+      <div className="border-t border-orange-200 pt-4 mt-1">
         <PfcPresetSelector
           defaultP={existingGoal?.proteinPercent ?? 25}
           defaultF={existingGoal?.fatPercent ?? 25}
@@ -122,7 +122,7 @@ export function GoalForm({
 
       {/* プレビュー */}
       {preview && (
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-xl border border-orange-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
           <p className="text-sm font-medium mb-3">自動算出結果</p>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
@@ -150,7 +150,7 @@ export function GoalForm({
       <button
         type="submit"
         disabled={saving}
-        className="mt-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="mt-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         {saving ? "保存中..." : "目標を保存する"}
       </button>

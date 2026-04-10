@@ -74,7 +74,7 @@ export function GoalForm({
   }
 
   return (
-    <form action={handleSubmit} className="mt-4 flex flex-col gap-4 border-t border-zinc-200 pt-4 dark:border-zinc-700">
+    <form action={handleSubmit} className="mt-4 flex flex-col gap-4 border-t border-orange-200 pt-4 dark:border-zinc-700">
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1">
           <span className="text-sm font-medium">目標体重（kg）</span>
@@ -87,7 +87,7 @@ export function GoalForm({
             value={targetWeight}
             onChange={(e) => setTargetWeight(e.target.value)}
             required
-            className="rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            className="rounded-lg border border-orange-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
           />
         </label>
         <div className="flex flex-col gap-1">
@@ -102,7 +102,7 @@ export function GoalForm({
       </div>
 
       {/* PFCバランス */}
-      <div className="border-t border-zinc-200 pt-4 mt-1">
+      <div className="border-t border-orange-200 pt-4 mt-1">
         <PfcPresetSelector
           defaultP={existingGoal.proteinPercent ?? 25}
           defaultF={existingGoal.fatPercent ?? 25}
@@ -132,14 +132,14 @@ export function GoalForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-full bg-zinc-900 px-5 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="rounded-full bg-orange-500 px-5 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {saving ? "保存中..." : "保存"}
         </button>
         <button
           type="button"
           onClick={() => setEditing(false)}
-          className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className="rounded-full border border-orange-300 px-5 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
         >
           キャンセル
         </button>

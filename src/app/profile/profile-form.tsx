@@ -65,8 +65,8 @@ export function ProfileForm({
               onClick={() => setGender(opt.value)}
               className={`flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors ${
                 gender === opt.value
-                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-900"
-                  : "border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                  ? "border-amber-600 bg-amber-600 text-white dark:border-white dark:bg-white dark:text-zinc-900"
+                  : "border-orange-300 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
               }`}
             >
               {opt.label}
@@ -86,7 +86,7 @@ export function ProfileForm({
           max="120"
           defaultValue={existingProfile?.age ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：30"
         />
       </label>
@@ -102,7 +102,7 @@ export function ProfileForm({
           step="0.1"
           defaultValue={existingProfile?.heightCm ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：170.5"
         />
       </label>
@@ -118,7 +118,7 @@ export function ProfileForm({
           step="0.1"
           defaultValue={existingProfile?.weightKg ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：65.0"
         />
       </label>
@@ -130,7 +130,7 @@ export function ProfileForm({
           name="activityLevel"
           defaultValue={existingProfile?.activityLevel ?? ""}
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
         >
           <option value="" disabled>
             選択してください
@@ -144,7 +144,7 @@ export function ProfileForm({
       </label>
 
       {/* PFCバランス */}
-      <div className="border-t border-zinc-200 pt-4 mt-1">
+      <div className="border-t border-orange-200 pt-4 mt-1">
         <PfcPresetSelector
           defaultP={existingProfile?.proteinPercent ?? 25}
           defaultF={existingProfile?.fatPercent ?? 25}
@@ -157,7 +157,7 @@ export function ProfileForm({
       <button
         type="submit"
         disabled={saving}
-        className="mt-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="mt-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         {saving ? "保存中..." : "保存する"}
       </button>

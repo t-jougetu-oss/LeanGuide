@@ -43,7 +43,7 @@ export function WeightForm() {
           max="300"
           step="0.1"
           required
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：65.0"
         />
       </label>
@@ -56,7 +56,7 @@ export function WeightForm() {
           min="1"
           max="60"
           step="0.1"
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-orange-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
           placeholder="例：17.6"
         />
       </label>
@@ -66,7 +66,7 @@ export function WeightForm() {
       <button
         type="submit"
         disabled={saving}
-        className="mt-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="mt-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         {saving ? "保存中..." : "記録する"}
       </button>

@@ -25,7 +25,7 @@ export default async function ReminderSettingPage() {
           <p className="text-sm text-zinc-500 leading-relaxed mb-8 max-w-xs">
             毎日決まった時間に食事をしたり、食後一定間隔で間食を摂りたい場合は、通知登録をしてリマインドをしましょう。
           </p>
-          <button className="rounded-full bg-zinc-900 px-8 py-3 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+          <button className="rounded-full bg-orange-500 px-8 py-3 text-sm font-medium text-white hover:bg-orange-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
             通知設定をする
           </button>
         </div>

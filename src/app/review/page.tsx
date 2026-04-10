@@ -135,7 +135,7 @@ export default async function ReviewPage() {
       {/* 記録の継続率 */}
       <section className="mb-6">
         <h2 className="text-sm font-medium text-zinc-500 mb-3">記録の継続</h2>
-        <div className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
+        <div className="rounded-xl border border-orange-200 p-5 dark:border-zinc-800">
           <p className="text-3xl font-bold">
             {daysCount}
             <span className="text-base font-normal text-zinc-500">/ 7日</span>
@@ -159,7 +159,7 @@ export default async function ReviewPage() {
       {/* 体重の変化 */}
       <section className="mb-6">
         <h2 className="text-sm font-medium text-zinc-500 mb-3">体重の変化</h2>
-        <div className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
+        <div className="rounded-xl border border-orange-200 p-5 dark:border-zinc-800">
           {weightChange !== null ? (
             <>
               <p className="text-3xl font-bold">
@@ -181,7 +181,7 @@ export default async function ReviewPage() {
       {/* 食事の概要（目標比較付き） */}
       <section className="mb-6">
         <h2 className="text-sm font-medium text-zinc-500 mb-3">食事の概要</h2>
-        <div className="rounded-xl border border-zinc-200 p-4 mb-3 dark:border-zinc-800">
+        <div className="rounded-xl border border-orange-200 p-4 mb-3 dark:border-zinc-800">
           <div className="flex items-baseline justify-between">
             <div>
               <p className="text-xs text-zinc-500">平均カロリー/日</p>
@@ -214,7 +214,7 @@ export default async function ReviewPage() {
 
         {/* 平均PFC */}
         {daysCount > 0 && (
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
             <p className="text-xs text-zinc-500 mb-3">平均PFCバランス/日</p>
             <div className="flex flex-col gap-2">
               {[
@@ -262,7 +262,7 @@ export default async function ReviewPage() {
           </div>
         )}
 
-        <div className="mt-3 rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="mt-3 rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
           <p className="text-xs text-zinc-500">食事回数</p>
           <p className="text-xl font-bold mt-1">{meals.mealCount}回</p>
         </div>
@@ -272,14 +272,14 @@ export default async function ReviewPage() {
       <section className="mb-6">
         <h2 className="text-sm font-medium text-zinc-500 mb-3">活動の概要</h2>
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
             <p className="text-xs text-zinc-500">合計運動時間</p>
             <p className="text-xl font-bold mt-1">
               {activities.totalMinutes}
               <span className="text-xs font-normal">分</span>
             </p>
           </div>
-          <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+          <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
             <p className="text-xs text-zinc-500">消費カロリー</p>
             <p className="text-xl font-bold mt-1">
               {activities.totalCaloriesBurned}
@@ -292,7 +292,7 @@ export default async function ReviewPage() {
       {/* 分析へのリンク */}
       <Link
         href="/analysis"
-        className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white text-center transition-colors hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white text-center transition-colors hover:bg-orange-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         詳しい原因分析を見る
       </Link>

@@ -65,7 +65,7 @@ export default async function WeightRecordPage() {
             <h2 className="text-sm font-medium text-zinc-500 mb-3">
               体重推移
             </h2>
-            <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
+            <div className="rounded-xl border border-orange-200 p-4 dark:border-zinc-800">
               <WeightMiniChart
                 data={chartData}
                 targetWeight={goal ? Number(goal.targetWeightKg) : undefined}
@@ -80,7 +80,7 @@ export default async function WeightRecordPage() {
             <h2 className="text-sm font-medium text-zinc-500 mb-3">
               直近7日間の記録
             </h2>
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
               {last7
                 .slice()
                 .reverse()

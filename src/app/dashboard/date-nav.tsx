@@ -54,7 +54,7 @@ export function DateNav({
               onClick={() => onDateChange(d.date)}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 isSelected
-                  ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
+                  ? "bg-amber-600 text-white dark:bg-white dark:text-zinc-900"
                   : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
               }`}
             >

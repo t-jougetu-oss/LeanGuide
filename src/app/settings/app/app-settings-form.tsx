@@ -38,7 +38,7 @@ export function AppSettingsForm({
     <div>
       {/* 設定 */}
       <h2 className="text-sm font-medium text-zinc-500 mb-3">設定</h2>
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800 mb-6">
+      <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800 mb-6">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm">PFCの小数点以下を有効にする</span>
           <button
@@ -76,7 +76,7 @@ export function AppSettingsForm({
 
       {/* その他 */}
       <h2 className="text-sm font-medium text-zinc-500 mb-3">その他</h2>
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800 mb-6">
+      <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800 mb-6">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm">要望/お問い合わせ</span>
         </div>
@@ -84,7 +84,7 @@ export function AppSettingsForm({
 
       {/* 情報 */}
       <h2 className="text-sm font-medium text-zinc-500 mb-3">情報</h2>
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800 mb-8">
+      <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800 mb-8">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm">バージョン</span>
           <span className="text-sm text-zinc-500">1.0.0</span>
@@ -94,7 +94,7 @@ export function AppSettingsForm({
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="w-full rounded-full bg-orange-500 px-6 py-3 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         {saving ? "保存中..." : "設定を保存"}
       </button>

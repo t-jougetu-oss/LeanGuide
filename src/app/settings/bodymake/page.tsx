@@ -48,7 +48,7 @@ export default async function BodymakeSettingPage() {
 
         {goal ? (
           <>
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
               <div className="flex items-center justify-between px-4 py-3">
                 <span className="text-sm text-zinc-500">目標体重</span>
                 <span className="text-sm font-medium">
@@ -104,7 +104,7 @@ export default async function BodymakeSettingPage() {
             </p>
             <Link
               href="/goal"
-              className="inline-block rounded-full bg-zinc-900 px-6 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="inline-block rounded-full bg-orange-500 px-6 py-2 text-sm font-medium text-white hover:bg-orange-600 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               目標を設定する
             </Link>
