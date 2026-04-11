@@ -12,7 +12,11 @@ import { DashboardClient } from "./dashboard-client";
 import { AppShell } from "../components/app-shell";
 import { jstToday, jstDaysAgo } from "@/lib/date";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string }>;
+}) {
   await connection();
   const session = await auth();
   if (!session?.user) redirect("/");
@@ -36,11 +40,13 @@ export default async function DashboardPage() {
     .where(eq(goals.userId, userId));
   const goal = goalRows.length > 0 ? goalRows[0] : null;
 
-  // 今日の日付（JST）
+  const sp = await searchParams;
   const today = jstToday();
+  const selectedDate = sp.date ?? today;
+  const isToday = selectedDate === today;
 
-  // 今日の食事記録を集計
-  const todayMeals = await db
+  // 選択日の食事記録を集計
+  const selectedDayMeals = await db
     .select({
       totalCalories: sql<number>`coalesce(sum(${mealLogs.calories}), 0)`,
       totalProtein: sql<number>`coalesce(sum(${mealLogs.proteinGrams}), 0)`,
@@ -48,19 +54,21 @@ export default async function DashboardPage() {
       totalCarb: sql<number>`coalesce(sum(${mealLogs.carbGrams}), 0)`,
     })
     .from(mealLogs)
-    .where(and(eq(mealLogs.userId, userId), eq(mealLogs.date, today)));
+    .where(and(eq(mealLogs.userId, userId), eq(mealLogs.date, selectedDate)));
 
-  const meals = todayMeals[0];
+  const meals = selectedDayMeals[0];
 
-  // 今日の運動消費カロリー
-  const todayExercise = await db
+  // 選択日の運動消費カロリー
+  const selectedDayExercise = await db
     .select({
       totalBurned: sql<number>`coalesce(sum(${activityLogs.caloriesBurned}), 0)`,
     })
     .from(activityLogs)
-    .where(and(eq(activityLogs.userId, userId), eq(activityLogs.date, today)));
+    .where(
+      and(eq(activityLogs.userId, userId), eq(activityLogs.date, selectedDate))
+    );
 
-  const exerciseCalories = Number(todayExercise[0]?.totalBurned ?? 0);
+  const exerciseCalories = Number(selectedDayExercise[0]?.totalBurned ?? 0);
 
   // 直近14日間の体重記録
   const fourteenDaysAgoStr = jstDaysAgo(14);
@@ -75,14 +83,19 @@ export default async function DashboardPage() {
     )
     .orderBy(sql`${weightLogs.date} asc`);
 
-  const currentWeight =
-    recentWeights.length > 0
-      ? Number(recentWeights[recentWeights.length - 1].weightKg)
+  // 選択日までで一番新しい体重レコード
+  const weightsUpToSelected = recentWeights.filter(
+    (w) => w.date <= selectedDate
+  );
+  const lastWeightRow =
+    weightsUpToSelected.length > 0
+      ? weightsUpToSelected[weightsUpToSelected.length - 1]
       : null;
 
+  const currentWeight = lastWeightRow ? Number(lastWeightRow.weightKg) : null;
   const latestBodyFat =
-    recentWeights.length > 0 && recentWeights[recentWeights.length - 1].bodyFatPercent
-      ? Number(recentWeights[recentWeights.length - 1].bodyFatPercent)
+    lastWeightRow && lastWeightRow.bodyFatPercent
+      ? Number(lastWeightRow.bodyFatPercent)
       : null;
 
   const weightChartData = recentWeights.map((w) => ({
@@ -166,9 +179,8 @@ export default async function DashboardPage() {
 
       {/* 日付ナビ + カロリー/PFC/体重タブ */}
       <DashboardClient
-        userId={userId}
         goal={goalData}
-        initialData={{
+        data={{
           totalCalories: Number(meals.totalCalories),
           totalProtein: Number(meals.totalProtein),
           totalFat: Number(meals.totalFat),
@@ -177,7 +189,7 @@ export default async function DashboardPage() {
           currentWeight,
           currentBodyFat: latestBodyFat,
         }}
-        initialDate={today}
+        selectedDate={selectedDate}
       />
 
       {/* 体重推移ミニグラフ */}
@@ -222,21 +234,25 @@ export default async function DashboardPage() {
         <h2 className="text-sm font-medium text-zinc-500 mb-3">記録する</h2>
         <div className="grid grid-cols-3 gap-3">
           <Link
-            href="/record/meal"
+            href={isToday ? "/record/meal" : `/record/meal?date=${selectedDate}`}
             className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">🍽</span>
             <span className="text-xs font-medium">食事</span>
           </Link>
           <Link
-            href="/record/weight"
+            href={isToday ? "/record/weight" : `/record/weight?date=${selectedDate}`}
             className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">⚖️</span>
             <span className="text-xs font-medium">体重</span>
           </Link>
           <Link
-            href="/record/activity"
+            href={
+              isToday
+                ? "/record/activity"
+                : `/record/activity?date=${selectedDate}`
+            }
             className="rounded-xl border border-orange-200 p-4 text-center transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
           >
             <span className="text-2xl block mb-1">🏃</span>

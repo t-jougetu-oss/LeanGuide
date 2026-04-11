@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { DateNav } from "./date-nav";
 import { HomeTabs } from "./home-tabs";
-import { getDashboardData } from "./actions";
+import { jstToday } from "@/lib/date";
 
 type PfcItem = {
   label: string;
@@ -21,7 +21,7 @@ type GoalData = {
   targetBodyFatPercent: number | null;
 };
 
-type InitialData = {
+type DayData = {
   totalCalories: number;
   totalProtein: number;
   totalFat: number;
@@ -32,37 +32,24 @@ type InitialData = {
 };
 
 export function DashboardClient({
-  userId,
   goal,
-  initialData,
-  initialDate,
+  data,
+  selectedDate,
 }: {
-  userId: string;
   goal: GoalData | null;
-  initialData: InitialData;
-  initialDate: string;
+  data: DayData;
+  selectedDate: string;
 }) {
-  const [selectedDate, setSelectedDate] = useState(initialDate);
-  const [data, setData] = useState(initialData);
-  const [loading, setLoading] = useState(false);
-
-  const fetchData = useCallback(
-    async (date: string) => {
-      if (date === initialDate) {
-        setData(initialData);
-        return;
-      }
-      setLoading(true);
-      const result = await getDashboardData(userId, date);
-      setData(result);
-      setLoading(false);
-    },
-    [userId, initialDate, initialData]
-  );
+  const router = useRouter();
+  const pathname = usePathname();
 
   function handleDateChange(date: string) {
-    setSelectedDate(date);
-    fetchData(date);
+    // 今日を選択した場合は ?date を消してクリーンなURLに
+    if (date === jstToday()) {
+      router.push(pathname);
+    } else {
+      router.push(`${pathname}?date=${date}`);
+    }
   }
 
   const pfcData: PfcItem[] = goal
@@ -89,7 +76,7 @@ export function DashboardClient({
     : [];
 
   return (
-    <div className={loading ? "opacity-50 transition-opacity" : ""}>
+    <div>
       <DateNav selectedDate={selectedDate} onDateChange={handleDateChange} />
       <HomeTabs
         intake={data.totalCalories}
