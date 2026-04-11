@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>モックアップ｜登録済み食事からお気に入り追加 A vs B</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        background: #fff7ed;
+        color: #1f2937;
+        -webkit-font-smoothing: antialiased;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        border-radius: 9999px;
+        background: #fed7aa;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 9999px;
+        background: #ffffff;
+        border: 3px solid #f97316;
+        box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+      }
+      .phone {
+        max-width: 380px;
+        min-height: 700px;
+        border-radius: 32px;
+        border: 1px solid #fed7aa;
+        background: #fff;
+        box-shadow: 0 8px 40px rgba(249, 115, 22, 0.12);
+        overflow: hidden;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="mx-auto max-w-6xl px-4 py-6">
+      <!-- 説明 -->
+      <section class="rounded-2xl bg-white border border-orange-200 p-5 mb-8">
+        <h1 class="text-lg font-bold text-zinc-900 mb-2">
+          📝 モックアップ：登録済みの食事からお気に入り追加
+        </h1>
+        <p class="text-sm text-zinc-600 leading-relaxed">
+          既に記録済みの食事項目を、後からお気に入りに追加する方法の比較。
+          <strong>A案（編集モーダル内にボタン）</strong> と
+          <strong>B案（一覧に⭐アイコン）</strong> を並べて見比べてください。
+        </p>
+      </section>
+
+      <!-- ================= A案 ================= -->
+      <section class="mb-10">
+        <h2 class="text-xl font-bold text-orange-700 mb-4 flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white">A</span>
+          編集モーダル内にお気に入りボタン
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- A-1: リスト（変化なし） -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">① 一覧画面</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              見た目は今までと同じ。項目タップで編集モーダルが開く。
+            </p>
+            <div class="phone mx-auto">
+              <div class="px-5 pt-6 pb-3">
+                <h1 class="text-lg font-bold mb-3">今日の記録</h1>
+                <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50">
+                  <div class="text-[10px] text-zinc-500 mb-0.5">本日の合計</div>
+                  <div class="text-xl font-bold">820 <span class="text-xs font-normal text-zinc-500">kcal</span></div>
+                </div>
+
+                <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                  <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] font-medium text-zinc-500">朝食</span>
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-zinc-400">86kcal</span>
+                        <span class="text-[9px] text-orange-500">›</span>
+                      </div>
+                    </div>
+                    <p class="text-sm mt-0.5">🍌 バナナ</p>
+                  </button>
+                  <button class="w-full px-4 py-3 text-left bg-orange-100/60 border-l-2 border-orange-500">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] font-medium text-zinc-500">昼食</span>
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-zinc-400">480kcal</span>
+                        <span class="text-[9px] text-orange-500">›</span>
+                      </div>
+                    </div>
+                    <p class="text-sm mt-0.5">🍚 白ごはん ← タップ</p>
+                  </button>
+                  <button class="w-full px-4 py-3 text-left">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] font-medium text-zinc-500">夕食</span>
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-zinc-400">254kcal</span>
+                        <span class="text-[9px] text-orange-500">›</span>
+                      </div>
+                    </div>
+                    <p class="text-sm mt-0.5">🐟 焼き鮭</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- A-2: モーダル（未登録） -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">② 編集モーダル（未登録）</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              「⭐ お気に入りに追加」ボタンがアクティブな状態。
+            </p>
+            <div class="phone mx-auto relative">
+              <div class="absolute inset-0 bg-orange-50/70 backdrop-blur-sm"></div>
+              <div class="absolute inset-0 bg-black/40"></div>
+
+              <div class="absolute left-0 right-0 bottom-0 rounded-t-3xl bg-white shadow-2xl border-t border-orange-200">
+                <div class="flex justify-center pt-2 pb-1">
+                  <div class="w-10 h-1 rounded-full bg-zinc-300"></div>
+                </div>
+                <div class="px-5 pt-2 pb-3 flex items-center justify-between border-b border-orange-100">
+                  <h3 class="text-sm font-bold">記録を編集</h3>
+                  <button class="text-xs text-zinc-500">✕ 閉じる</button>
+                </div>
+
+                <div class="px-5 py-4 space-y-4">
+                  <div class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
+                    <div class="text-3xl">🍚</div>
+                    <div>
+                      <div class="text-sm font-bold">白ごはん</div>
+                      <div class="text-[11px] text-zinc-500">基準: 150g / 252 kcal</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-medium text-zinc-600">分量</span>
+                      <span class="text-lg font-bold text-orange-600">100<span class="text-xs text-zinc-500">%</span></span>
+                    </div>
+                    <input type="range" min="10" max="200" step="10" value="100" class="w-full" />
+                  </div>
+
+                  <div class="grid grid-cols-4 gap-1.5 text-center">
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">kcal</div>
+                      <div class="text-xs font-bold text-orange-600">252</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">P</div>
+                      <div class="text-xs font-bold text-orange-600">4g</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">F</div>
+                      <div class="text-xs font-bold text-orange-600">0g</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">C</div>
+                      <div class="text-xs font-bold text-orange-600">56g</div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 pt-1 pb-4">
+                    <button class="w-full py-2.5 rounded-xl bg-orange-500 text-white text-sm font-bold shadow-sm">
+                      更新する
+                    </button>
+                    <!-- NEW お気に入りボタン -->
+                    <button class="w-full py-2.5 rounded-xl border-2 border-amber-400 bg-amber-50 text-amber-700 text-sm font-semibold active:bg-amber-100 flex items-center justify-center gap-1.5">
+                      <span class="text-base">⭐</span> お気に入りに追加
+                    </button>
+                    <button class="w-full py-2.5 rounded-xl border border-red-300 bg-white text-red-500 text-xs font-semibold">
+                      🗑 この記録を削除
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- A-3: モーダル（登録済み） -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">③ 編集モーダル（登録済み）</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              すでにお気に入りに同名がある場合は押せないグレー表示。
+            </p>
+            <div class="phone mx-auto relative">
+              <div class="absolute inset-0 bg-orange-50/70 backdrop-blur-sm"></div>
+              <div class="absolute inset-0 bg-black/40"></div>
+
+              <div class="absolute left-0 right-0 bottom-0 rounded-t-3xl bg-white shadow-2xl border-t border-orange-200">
+                <div class="flex justify-center pt-2 pb-1">
+                  <div class="w-10 h-1 rounded-full bg-zinc-300"></div>
+                </div>
+                <div class="px-5 pt-2 pb-3 flex items-center justify-between border-b border-orange-100">
+                  <h3 class="text-sm font-bold">記録を編集</h3>
+                  <button class="text-xs text-zinc-500">✕ 閉じる</button>
+                </div>
+
+                <div class="px-5 py-4 space-y-4">
+                  <div class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
+                    <div class="text-3xl">🍌</div>
+                    <div>
+                      <div class="text-sm font-bold">バナナ</div>
+                      <div class="text-[11px] text-zinc-500">基準: 100g / 86 kcal</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-medium text-zinc-600">分量</span>
+                      <span class="text-lg font-bold text-orange-600">100<span class="text-xs text-zinc-500">%</span></span>
+                    </div>
+                    <input type="range" min="10" max="200" step="10" value="100" class="w-full" />
+                  </div>
+
+                  <div class="grid grid-cols-4 gap-1.5 text-center">
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">kcal</div>
+                      <div class="text-xs font-bold text-orange-600">86</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">P</div>
+                      <div class="text-xs font-bold text-orange-600">1g</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">F</div>
+                      <div class="text-xs font-bold text-orange-600">0g</div>
+                    </div>
+                    <div class="rounded-lg bg-orange-50 py-1.5 border border-orange-100">
+                      <div class="text-[9px] text-zinc-500">C</div>
+                      <div class="text-xs font-bold text-orange-600">22g</div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 pt-1 pb-4">
+                    <button class="w-full py-2.5 rounded-xl bg-orange-500 text-white text-sm font-bold shadow-sm">
+                      更新する
+                    </button>
+                    <!-- 登録済み状態 -->
+                    <div class="w-full py-2.5 rounded-xl border border-zinc-300 bg-zinc-100 text-zinc-500 text-sm font-semibold flex items-center justify-center gap-1.5">
+                      <span class="text-base">⭐</span> お気に入り登録済み
+                    </div>
+                    <button class="w-full py-2.5 rounded-xl border border-red-300 bg-white text-red-500 text-xs font-semibold">
+                      🗑 この記録を削除
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 p-4 rounded-xl bg-orange-50 border border-orange-200">
+          <p class="text-xs text-zinc-700 leading-relaxed">
+            <strong>A案の特徴：</strong>
+            <br />• 編集モーダルが「記録の詳細アクション集約画面」に育つ
+            <br />• 一覧の見た目は変わらないのでスッキリ
+            <br />• 「2タップ」（項目タップ → お気に入りボタンタップ）で追加
+            <br />• 既登録状態も同じ場所で確認できる
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= B案 ================= -->
+      <section>
+        <h2 class="text-xl font-bold text-orange-700 mb-4 flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white">B</span>
+          一覧項目の右端に⭐アイコン
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- B-1: 通常状態 -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">① 通常（⭐が並ぶ）</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              各項目の右側に小さい⭐アイコン。空=未登録、塗り=登録済み。
+            </p>
+            <div class="phone mx-auto">
+              <div class="px-5 pt-6 pb-3">
+                <h1 class="text-lg font-bold mb-3">今日の記録</h1>
+                <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50">
+                  <div class="text-[10px] text-zinc-500 mb-0.5">本日の合計</div>
+                  <div class="text-xl font-bold">820 <span class="text-xs font-normal text-zinc-500">kcal</span></div>
+                </div>
+
+                <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">朝食</span>
+                        <span class="text-[10px] text-zinc-400">86kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍌 バナナ</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-amber-500 hover:bg-amber-50 active:bg-amber-100 text-lg" title="お気に入り登録済み">
+                      ★
+                    </button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">昼食</span>
+                        <span class="text-[10px] text-zinc-400">480kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍚 白ごはん</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-amber-500 hover:bg-amber-50 text-lg" title="お気に入り未登録">
+                      ☆
+                    </button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">夕食</span>
+                        <span class="text-[10px] text-zinc-400">254kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🐟 焼き鮭</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 hover:text-amber-500 hover:bg-amber-50 text-lg" title="お気に入り未登録">
+                      ☆
+                    </button>
+                  </div>
+                </div>
+                <p class="text-[10px] text-zinc-400 text-center mt-2">
+                  項目タップ=編集 / ⭐タップ=お気に入り
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- B-2: ⭐タップ直後 -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">② ⭐タップで即追加</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              白ごはんの⭐を押した瞬間、塗りに変わる。
+              下にトースト通知で確認。
+            </p>
+            <div class="phone mx-auto relative">
+              <div class="px-5 pt-6 pb-3">
+                <h1 class="text-lg font-bold mb-3">今日の記録</h1>
+                <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50">
+                  <div class="text-[10px] text-zinc-500 mb-0.5">本日の合計</div>
+                  <div class="text-xl font-bold">820 <span class="text-xs font-normal text-zinc-500">kcal</span></div>
+                </div>
+
+                <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">朝食</span>
+                        <span class="text-[10px] text-zinc-400">86kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍌 バナナ</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-amber-500 text-lg">★</button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2 bg-amber-50">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">昼食</span>
+                        <span class="text-[10px] text-zinc-400">480kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍚 白ごはん</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-amber-500 text-lg animate-pulse">★</button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">夕食</span>
+                        <span class="text-[10px] text-zinc-400">254kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🐟 焼き鮭</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 text-lg">☆</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- トースト -->
+              <div class="absolute left-1/2 bottom-20 -translate-x-1/2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-medium shadow-lg flex items-center gap-2">
+                <span class="text-amber-400">★</span>
+                お気に入りに追加しました
+              </div>
+            </div>
+          </div>
+
+          <!-- B-3: タップで解除もできる -->
+          <div>
+            <div class="mb-2 text-sm font-semibold text-zinc-600">③ 登録済みをもう一度タップ</div>
+            <p class="text-xs text-zinc-500 mb-3">
+              もう一度タップで解除（トグル動作）。<br />
+              確認ダイアログなしで即削除。
+            </p>
+            <div class="phone mx-auto relative">
+              <div class="px-5 pt-6 pb-3">
+                <h1 class="text-lg font-bold mb-3">今日の記録</h1>
+                <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50">
+                  <div class="text-[10px] text-zinc-500 mb-0.5">本日の合計</div>
+                  <div class="text-xl font-bold">820 <span class="text-xs font-normal text-zinc-500">kcal</span></div>
+                </div>
+
+                <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                  <div class="px-3 py-3 flex items-center gap-2 bg-zinc-50">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">朝食</span>
+                        <span class="text-[10px] text-zinc-400">86kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍌 バナナ</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 text-lg animate-pulse">☆</button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">昼食</span>
+                        <span class="text-[10px] text-zinc-400">480kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🍚 白ごはん</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-amber-500 text-lg">★</button>
+                  </div>
+                  <div class="px-3 py-3 flex items-center gap-2">
+                    <button class="flex-1 text-left min-w-0">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-500">夕食</span>
+                        <span class="text-[10px] text-zinc-400">254kcal</span>
+                      </div>
+                      <p class="text-sm truncate">🐟 焼き鮭</p>
+                    </button>
+                    <button class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-zinc-300 text-lg">☆</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="absolute left-1/2 bottom-20 -translate-x-1/2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-medium shadow-lg">
+                お気に入りを解除しました
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 p-4 rounded-xl bg-orange-50 border border-orange-200">
+          <p class="text-xs text-zinc-700 leading-relaxed">
+            <strong>B案の特徴：</strong>
+            <br />• 一覧上で状態（登録済み/未登録）が一目で見える
+            <br />• 「1タップ」で追加も解除もできる（最速）
+            <br />• トグル式なので誤タップしても1タップで戻せる
+            <br />• 一覧が若干ごちゃつく（⭐アイコン分の横幅）
+            <br />• 登録操作と「記録編集」の2つのタップ領域が近接するのでミスタップの可能性あり
+          </p>
+        </div>
+      </section>
+
+      <!-- 比較まとめ -->
+      <section class="rounded-2xl bg-white border border-orange-200 p-5 mt-10">
+        <h3 class="text-sm font-bold text-zinc-800 mb-3">⚖️ A案 vs B案 早見表</h3>
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="border-b border-orange-200">
+              <th class="text-left py-2 font-semibold">観点</th>
+              <th class="text-left py-2 font-semibold text-orange-700">A案（モーダル）</th>
+              <th class="text-left py-2 font-semibold text-orange-700">B案（⭐アイコン）</th>
+            </tr>
+          </thead>
+          <tbody class="text-zinc-600">
+            <tr class="border-b border-orange-100">
+              <td class="py-2">操作タップ数</td>
+              <td class="py-2">2タップ</td>
+              <td class="py-2">1タップ（最速）</td>
+            </tr>
+            <tr class="border-b border-orange-100">
+              <td class="py-2">一覧の見た目</td>
+              <td class="py-2">スッキリ（変化なし）</td>
+              <td class="py-2">⭐が並ぶ</td>
+            </tr>
+            <tr class="border-b border-orange-100">
+              <td class="py-2">登録状態の視認性</td>
+              <td class="py-2">モーダル開かないと分からない</td>
+              <td class="py-2">一覧で一目で分かる</td>
+            </tr>
+            <tr class="border-b border-orange-100">
+              <td class="py-2">解除のしやすさ</td>
+              <td class="py-2">現状は仕様外（別途設定画面か手動）</td>
+              <td class="py-2">⭐もう一度タップ（トグル）</td>
+            </tr>
+            <tr class="border-b border-orange-100">
+              <td class="py-2">誤タップのリスク</td>
+              <td class="py-2">低（明示的なボタン）</td>
+              <td class="py-2">中（項目タップ領域と隣接）</td>
+            </tr>
+            <tr>
+              <td class="py-2">実装コスト</td>
+              <td class="py-2">小</td>
+              <td class="py-2">小〜中</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </body>
+</html>

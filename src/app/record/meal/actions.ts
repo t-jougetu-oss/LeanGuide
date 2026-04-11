@@ -165,3 +165,65 @@ export async function deleteMeal(mealId: string) {
 
   return { success: true };
 }
+
+// 食事記録をお気に入りに追加／解除（トグル）
+// - 未登録ならレコードの baseCalories 等を使って mealFavorites に INSERT
+// - すでに同名が登録済みなら mealFavorites から DELETE
+// - meal_logs は一切変更しない
+export async function toggleMealFavorite(mealId: string) {
+  const user = await requireUser();
+  if (!user) return { error: "ログインしてください" };
+
+  // 対象の食事記録を取得
+  const mealRows = await db
+    .select()
+    .from(mealLogs)
+    .where(and(eq(mealLogs.id, mealId), eq(mealLogs.userId, user.id)));
+
+  if (mealRows.length === 0) {
+    return { error: "記録が見つかりません" };
+  }
+  const meal = mealRows[0];
+
+  // 同名のお気に入りがすでにあるかチェック
+  const existing = await db
+    .select()
+    .from(mealFavorites)
+    .where(
+      and(
+        eq(mealFavorites.userId, user.id),
+        eq(mealFavorites.name, meal.description)
+      )
+    );
+
+  if (existing.length > 0) {
+    // 解除
+    await db
+      .delete(mealFavorites)
+      .where(
+        and(
+          eq(mealFavorites.userId, user.id),
+          eq(mealFavorites.name, meal.description)
+        )
+      );
+    return { success: true, isFavorited: false };
+  }
+
+  // 新規追加：base 値（100%基準）を使う。
+  // 古いレコードで base* が NULL の場合は現在値を 100% 扱いで保存
+  const baseCal = meal.baseCalories ?? meal.calories;
+  const baseP = meal.baseProteinGrams ?? meal.proteinGrams;
+  const baseF = meal.baseFatGrams ?? meal.fatGrams;
+  const baseC = meal.baseCarbGrams ?? meal.carbGrams;
+
+  await db.insert(mealFavorites).values({
+    userId: user.id,
+    name: meal.description,
+    calories: baseCal,
+    proteinGrams: baseP,
+    fatGrams: baseF,
+    carbGrams: baseC,
+  });
+
+  return { success: true, isFavorited: true };
+}

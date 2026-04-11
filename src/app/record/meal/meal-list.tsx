@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { updateMealPortion, deleteMeal } from "./actions";
+import { updateMealPortion, deleteMeal, toggleMealFavorite } from "./actions";
 
 type MealListItem = {
   id: string;
@@ -28,13 +28,68 @@ const mealTypeLabels: Record<string, string> = {
   snack: "間食",
 };
 
-export function MealList({ meals }: { meals: MealListItem[] }) {
+export function MealList({
+  meals,
+  favoriteNames = [],
+}: {
+  meals: MealListItem[];
+  favoriteNames?: string[];
+}) {
   const router = useRouter();
   const [editing, setEditing] = useState<MealListItem | null>(null);
   // モーダル内で操作する分量（%）
   const [portion, setPortion] = useState(100);
   const [saving, setSaving] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  // お気に入り状態を楽観的に管理（サーバー値をベースにクライアントで即時反映）
+  const [favoriteSet, setFavoriteSet] = useState<Set<string>>(
+    () => new Set(favoriteNames)
+  );
+  // サーバーから新しい favoriteNames が来たら同期
+  useEffect(() => {
+    setFavoriteSet(new Set(favoriteNames));
+  }, [favoriteNames]);
+  // トースト通知
+  const [toast, setToast] = useState<string | null>(null);
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  async function handleToggleFavorite(
+    e: React.MouseEvent,
+    meal: MealListItem
+  ) {
+    e.stopPropagation();
+    const wasFavorited = favoriteSet.has(meal.description);
+    // 楽観的更新（即座にUIに反映）
+    setFavoriteSet((prev) => {
+      const next = new Set(prev);
+      if (wasFavorited) next.delete(meal.description);
+      else next.add(meal.description);
+      return next;
+    });
+    setToast(
+      wasFavorited
+        ? "お気に入りを解除しました"
+        : "⭐ お気に入りに追加しました（基準量100%で保存）"
+    );
+    // サーバーに反映
+    const result = await toggleMealFavorite(meal.id);
+    if (result?.error) {
+      // エラー時はロールバック
+      setFavoriteSet((prev) => {
+        const next = new Set(prev);
+        if (wasFavorited) next.add(meal.description);
+        else next.delete(meal.description);
+        return next;
+      });
+      setToast(result.error);
+      return;
+    }
+    router.refresh();
+  }
 
   function openEdit(meal: MealListItem) {
     setEditing(meal);
@@ -100,38 +155,70 @@ export function MealList({ meals }: { meals: MealListItem[] }) {
   return (
     <>
       <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
-        {meals.map((meal) => (
-          <button
-            key={meal.id}
-            type="button"
-            onClick={() => openEdit(meal)}
-            className="w-full px-4 py-3 text-left hover:bg-orange-50/60 active:bg-orange-100/60 dark:hover:bg-zinc-800 transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-zinc-500">
-                {mealTypeLabels[meal.mealType] ?? meal.mealType}
-              </span>
-              <div className="flex items-center gap-2">
-                {meal.calories != null && (
-                  <span className="text-xs text-zinc-400">
-                    {meal.calories}kcal
+        {meals.map((meal) => {
+          const isFavorited = favoriteSet.has(meal.description);
+          return (
+            <div
+              key={meal.id}
+              className="flex items-stretch hover:bg-orange-50/60 active:bg-orange-100/60 dark:hover:bg-zinc-800 transition-colors"
+            >
+              <button
+                type="button"
+                onClick={() => openEdit(meal)}
+                className="flex-1 min-w-0 px-4 py-3 text-left"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-zinc-500">
+                    {mealTypeLabels[meal.mealType] ?? meal.mealType}
                   </span>
+                  <div className="flex items-center gap-2">
+                    {meal.calories != null && (
+                      <span className="text-xs text-zinc-400">
+                        {meal.calories}kcal
+                      </span>
+                    )}
+                    <span className="text-[10px] text-orange-500">›</span>
+                  </div>
+                </div>
+                <p className="text-sm mt-1">{meal.description}</p>
+                {(meal.proteinGrams != null ||
+                  meal.fatGrams != null ||
+                  meal.carbGrams != null) && (
+                  <p className="text-xs text-zinc-400 mt-1">
+                    P:{meal.proteinGrams ?? 0}g / F:{meal.fatGrams ?? 0}g / C:
+                    {meal.carbGrams ?? 0}g
+                  </p>
                 )}
-                <span className="text-[10px] text-orange-500">›</span>
-              </div>
+              </button>
+              {/* お気に入りトグル（⭐） */}
+              <button
+                type="button"
+                onClick={(e) => handleToggleFavorite(e, meal)}
+                aria-label={
+                  isFavorited ? "お気に入りから外す" : "お気に入りに追加"
+                }
+                title={
+                  isFavorited ? "お気に入りから外す" : "お気に入りに追加"
+                }
+                className={`shrink-0 w-12 flex items-center justify-center text-xl transition-colors ${
+                  isFavorited
+                    ? "text-amber-500"
+                    : "text-zinc-300 hover:text-amber-500"
+                }`}
+              >
+                {isFavorited ? "★" : "☆"}
+              </button>
             </div>
-            <p className="text-sm mt-1">{meal.description}</p>
-            {(meal.proteinGrams != null ||
-              meal.fatGrams != null ||
-              meal.carbGrams != null) && (
-              <p className="text-xs text-zinc-400 mt-1">
-                P:{meal.proteinGrams ?? 0}g / F:{meal.fatGrams ?? 0}g / C:
-                {meal.carbGrams ?? 0}g
-              </p>
-            )}
-          </button>
-        ))}
+          );
+        })}
       </div>
+
+      {/* トースト通知 */}
+      {toast && (
+        <div className="fixed left-1/2 bottom-24 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-medium shadow-lg pointer-events-none">
+          {toast}
+        </div>
+      )}
 
       {/* 編集モーダル（ボトムシート） */}
       {editing && (

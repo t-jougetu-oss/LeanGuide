@@ -117,6 +117,7 @@ export default async function MealRecordPage({
                 baseFatGrams: m.baseFatGrams,
                 baseCarbGrams: m.baseCarbGrams,
               }))}
+              favoriteNames={favRows.map((f) => f.name)}
             />
           </section>
         ) : (
