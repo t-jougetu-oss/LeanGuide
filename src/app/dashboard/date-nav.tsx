@@ -18,7 +18,8 @@ export function DateNav({
     const dateStr = jstDaysAgo(i);
     const [, m, day] = dateStr.split("-").map(Number);
     const isToday = i === 0;
-    const label = isToday ? "Today" : `${m}/${day}`;
+    // Today ボタンにも実日付を併記してズレを検知しやすくする
+    const label = isToday ? `Today ${m}/${day}` : `${m}/${day}`;
     dates.push({ date: dateStr, label, isToday });
   }
 
