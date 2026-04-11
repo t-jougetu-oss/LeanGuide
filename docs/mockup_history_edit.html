@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>モックアップ｜過去記録の閲覧・編集・削除</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html,
+      body {
+        background: #fff7ed;
+        color: #1f2937;
+        -webkit-font-smoothing: antialiased;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        border-radius: 9999px;
+        background: #fed7aa;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 26px;
+        height: 26px;
+        border-radius: 9999px;
+        background: #ffffff;
+        border: 3px solid #f97316;
+        box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+        cursor: pointer;
+      }
+      .phone {
+        max-width: 380px;
+        min-height: 700px;
+        border-radius: 32px;
+        border: 1px solid #fed7aa;
+        background: #fff;
+        box-shadow: 0 8px 40px rgba(249, 115, 22, 0.12);
+        overflow: hidden;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <div class="mx-auto max-w-5xl px-4 py-6">
+      <!-- 説明 -->
+      <section class="rounded-2xl bg-white border border-orange-200 p-5 mb-8">
+        <h1 class="text-lg font-bold text-zinc-900 mb-2">
+          📝 モックアップ：過去記録の閲覧・編集・削除
+        </h1>
+        <p class="text-sm text-zinc-600 leading-relaxed">
+          食事・体重・活動の3つの記録ページ全てに <strong>日付ストリップ</strong>（ダッシュボードと同じやつ）を追加して、
+          過去の記録も閲覧・編集・削除できるようにします。下に
+          <span class="text-orange-600 font-semibold">状態①〜⑥</span> を並べてます。
+        </p>
+        <ul class="mt-3 text-xs text-zinc-500 space-y-1">
+          <li>・ <span class="text-orange-600 font-semibold">状態①</span>：食事ページで過去日（4/9）を選択</li>
+          <li>・ <span class="text-orange-600 font-semibold">状態②</span>：活動ページで過去日（4/9）を選択</li>
+          <li>・ <span class="text-orange-600 font-semibold">状態③</span>：体重ページで過去日を選択</li>
+          <li>・ <span class="text-orange-600 font-semibold">状態④</span>：活動の編集モーダル（時間スライダー）</li>
+          <li>・ <span class="text-orange-600 font-semibold">状態⑤</span>：体重の編集モーダル（数値直接編集）</li>
+          <li>・ <span class="text-orange-600 font-semibold">状態⑥</span>：既存の食事編集モーダル（参考）</li>
+        </ul>
+      </section>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- ========== 状態① 食事ページ 過去日選択 ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold">1</span>
+            <h2 class="text-base font-semibold text-zinc-800">食事ページ（過去日 4/9）</h2>
+          </div>
+          <div class="phone mx-auto">
+            <div class="px-5 pt-6 pb-3">
+              <h1 class="text-xl font-bold mb-4">記録する</h1>
+              <!-- タブ -->
+              <div class="flex rounded-lg border border-orange-300 overflow-hidden mb-4">
+                <button class="flex-1 py-2 text-xs font-medium bg-amber-600 text-white">食事</button>
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">体重</button>
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">活動</button>
+              </div>
+              <!-- 日付ストリップ（NEW） -->
+              <div class="flex items-center gap-2 mb-4 p-2 rounded-xl bg-orange-50 border border-orange-200">
+                <div class="flex-1 flex gap-1 overflow-x-auto scrollbar-hide">
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/5</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/6</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/7</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/8</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] bg-amber-600 text-white font-bold">4/9</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/10</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">Today 4/11</button>
+                </div>
+              </div>
+              <p class="text-[10px] text-orange-500 font-medium mb-2">NEW 日付を選ぶと過去の記録が見られます</p>
+            </div>
+
+            <!-- 入力フォーム（折りたたみ） -->
+            <div class="mx-5 mb-4 rounded-xl border border-orange-200 bg-orange-50/40 px-4 py-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-zinc-500">🔍 食品を検索・入力</span>
+                <span class="text-xs text-orange-500">タップして展開 ›</span>
+              </div>
+            </div>
+
+            <!-- 4/9 の記録一覧 -->
+            <div class="px-5 pb-4">
+              <div class="text-xs font-semibold text-zinc-500 mb-2">4月9日（木）の記録</div>
+
+              <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50">
+                <div class="text-[10px] text-zinc-500 mb-1">合計</div>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                  <div>
+                    <div class="text-sm font-bold">1920</div>
+                    <div class="text-[9px] text-zinc-400">kcal</div>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold">82</div>
+                    <div class="text-[9px] text-zinc-400">P(g)</div>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold">58</div>
+                    <div class="text-[9px] text-zinc-400">F(g)</div>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold">260</div>
+                    <div class="text-[9px] text-zinc-400">C(g)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-medium text-zinc-500">朝食</span>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[10px] text-zinc-400">380kcal</span>
+                      <span class="text-[9px] text-orange-500">›</span>
+                    </div>
+                  </div>
+                  <p class="text-xs mt-0.5">🍞 食パン＋バター</p>
+                </button>
+                <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-medium text-zinc-500">昼食</span>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[10px] text-zinc-400">680kcal</span>
+                      <span class="text-[9px] text-orange-500">›</span>
+                    </div>
+                  </div>
+                  <p class="text-xs mt-0.5">🍝 パスタカルボナーラ</p>
+                </button>
+                <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-medium text-zinc-500">夕食</span>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[10px] text-zinc-400">860kcal</span>
+                      <span class="text-[9px] text-orange-500">›</span>
+                    </div>
+                  </div>
+                  <p class="text-xs mt-0.5">🐟 焼き鮭定食</p>
+                </button>
+              </div>
+              <p class="text-[10px] text-zinc-400 text-center mt-2">※ 項目タップで編集モーダル</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 状態② 活動ページ 過去日 ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold">2</span>
+            <h2 class="text-base font-semibold text-zinc-800">活動ページ（過去日 4/9）</h2>
+          </div>
+          <div class="phone mx-auto">
+            <div class="px-5 pt-6 pb-3">
+              <h1 class="text-xl font-bold mb-4">記録する</h1>
+              <div class="flex rounded-lg border border-orange-300 overflow-hidden mb-4">
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">食事</button>
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">体重</button>
+                <button class="flex-1 py-2 text-xs font-medium bg-amber-600 text-white">活動</button>
+              </div>
+              <div class="flex items-center gap-2 mb-4 p-2 rounded-xl bg-orange-50 border border-orange-200">
+                <div class="flex-1 flex gap-1 overflow-x-auto scrollbar-hide">
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/5</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/6</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/7</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/8</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] bg-amber-600 text-white font-bold">4/9</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/10</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">Today 4/11</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mx-5 mb-4 rounded-xl border border-orange-200 bg-orange-50/40 px-4 py-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-zinc-500">🏃 活動を記録</span>
+                <span class="text-xs text-orange-500">タップして展開 ›</span>
+              </div>
+            </div>
+
+            <div class="px-5 pb-4">
+              <div class="text-xs font-semibold text-zinc-500 mb-2">4月9日（木）の活動</div>
+              <div class="rounded-xl border border-orange-200 p-3 mb-3 bg-orange-50/50 text-center">
+                <div class="text-[10px] text-zinc-500 mb-0.5">合計消費カロリー</div>
+                <div class="text-lg font-bold">320 <span class="text-xs font-normal text-zinc-500">kcal</span></div>
+              </div>
+              <div class="rounded-xl border border-orange-200 divide-y divide-orange-200">
+                <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs font-medium">🚶 ウォーキング</p>
+                      <p class="text-[10px] text-zinc-500 mt-0.5">30分 / 110 kcal</p>
+                    </div>
+                    <span class="text-[9px] text-orange-500">タップで編集 ›</span>
+                  </div>
+                </button>
+                <button class="w-full px-4 py-3 text-left hover:bg-orange-50/60">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-xs font-medium">🏋️ 筋トレ</p>
+                      <p class="text-[10px] text-zinc-500 mt-0.5">45分 / 210 kcal</p>
+                    </div>
+                    <span class="text-[9px] text-orange-500">タップで編集 ›</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 状態③ 体重ページ 過去日 ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold">3</span>
+            <h2 class="text-base font-semibold text-zinc-800">体重ページ（過去日 4/9）</h2>
+          </div>
+          <div class="phone mx-auto">
+            <div class="px-5 pt-6 pb-3">
+              <h1 class="text-xl font-bold mb-4">記録する</h1>
+              <div class="flex rounded-lg border border-orange-300 overflow-hidden mb-4">
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">食事</button>
+                <button class="flex-1 py-2 text-xs font-medium bg-amber-600 text-white">体重</button>
+                <button class="flex-1 py-2 text-xs font-medium text-zinc-500">活動</button>
+              </div>
+              <div class="flex items-center gap-2 mb-4 p-2 rounded-xl bg-orange-50 border border-orange-200">
+                <div class="flex-1 flex gap-1 overflow-x-auto scrollbar-hide">
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/5</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/6</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/7</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/8</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] bg-amber-600 text-white font-bold">4/9</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">4/10</button>
+                  <button class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] text-zinc-400">Today 4/11</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mx-5 mb-4 rounded-xl border border-orange-200 bg-orange-50/40 px-4 py-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-zinc-500">⚖️ 体重を記録</span>
+                <span class="text-xs text-orange-500">タップして展開 ›</span>
+              </div>
+            </div>
+
+            <div class="px-5 pb-4">
+              <div class="text-xs font-semibold text-zinc-500 mb-2">4月9日（木）の記録</div>
+              <button class="w-full rounded-xl border border-orange-200 p-4 text-left bg-orange-50/30 hover:bg-orange-50">
+                <div class="flex items-end justify-between">
+                  <div>
+                    <div class="text-[10px] text-zinc-500">体重</div>
+                    <div class="text-2xl font-bold">
+                      68.4 <span class="text-xs font-normal text-zinc-500">kg</span>
+                    </div>
+                    <div class="text-[10px] text-zinc-500 mt-1">体脂肪率 22.1%</div>
+                  </div>
+                  <span class="text-[10px] text-orange-500">タップで編集 ›</span>
+                </div>
+              </button>
+              <p class="text-[10px] text-zinc-400 text-center mt-2">※ 1日1件まで（編集すると上書き）</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 状態④ 活動編集モーダル ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold">4</span>
+            <h2 class="text-base font-semibold text-zinc-800">活動 編集モーダル</h2>
+          </div>
+          <div class="phone mx-auto relative">
+            <div class="absolute inset-0 bg-orange-50/70 backdrop-blur-sm"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <div class="absolute left-0 right-0 bottom-0 rounded-t-3xl bg-white shadow-2xl border-t border-orange-200">
+              <div class="flex justify-center pt-2 pb-1">
+                <div class="w-10 h-1 rounded-full bg-zinc-300"></div>
+              </div>
+              <div class="px-5 pt-2 pb-3 flex items-center justify-between border-b border-orange-100">
+                <h3 class="text-sm font-bold">活動を編集</h3>
+                <button class="text-xs text-zinc-500">✕ 閉じる</button>
+              </div>
+
+              <div class="px-5 py-4 space-y-5">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
+                  <div class="text-3xl">🚶</div>
+                  <div>
+                    <div class="text-sm font-bold">ウォーキング</div>
+                    <div class="text-[11px] text-zinc-500">4月9日の記録</div>
+                  </div>
+                </div>
+
+                <!-- 時間スライダー -->
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-medium text-zinc-600">時間</span>
+                    <span class="text-lg font-bold text-orange-600">
+                      45 <span class="text-xs text-zinc-500">分</span>
+                    </span>
+                  </div>
+                  <input type="range" min="5" max="180" step="5" value="45" class="w-full" />
+                  <div class="flex justify-between text-[10px] text-zinc-400 mt-1">
+                    <span>5分</span><span>60分</span><span>180分</span>
+                  </div>
+                  <p class="text-[11px] text-orange-600 font-medium mt-2">30分 → 45分に変更（+15分）</p>
+                </div>
+
+                <!-- プレビュー -->
+                <div class="rounded-lg bg-orange-100 border border-orange-300 p-3 text-center">
+                  <div class="text-[10px] text-zinc-500">消費カロリー</div>
+                  <div class="text-lg font-bold text-orange-700">165 <span class="text-xs text-zinc-500">kcal</span></div>
+                  <div class="text-[9px] text-zinc-400 mt-0.5">110 → 165 kcal</div>
+                </div>
+
+                <div class="flex flex-col gap-2 pt-2 pb-4">
+                  <button class="w-full py-3 rounded-xl bg-orange-500 text-white text-sm font-bold">更新する</button>
+                  <button class="w-full py-3 rounded-xl border border-red-300 bg-white text-red-500 text-sm font-semibold">🗑 この記録を削除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 状態⑤ 体重編集モーダル ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold">5</span>
+            <h2 class="text-base font-semibold text-zinc-800">体重 編集モーダル</h2>
+          </div>
+          <div class="phone mx-auto relative">
+            <div class="absolute inset-0 bg-orange-50/70 backdrop-blur-sm"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <div class="absolute left-0 right-0 bottom-0 rounded-t-3xl bg-white shadow-2xl border-t border-orange-200">
+              <div class="flex justify-center pt-2 pb-1">
+                <div class="w-10 h-1 rounded-full bg-zinc-300"></div>
+              </div>
+              <div class="px-5 pt-2 pb-3 flex items-center justify-between border-b border-orange-100">
+                <h3 class="text-sm font-bold">体重を編集</h3>
+                <button class="text-xs text-zinc-500">✕ 閉じる</button>
+              </div>
+
+              <div class="px-5 py-4 space-y-5">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
+                  <div class="text-3xl">⚖️</div>
+                  <div>
+                    <div class="text-sm font-bold">4月9日（木）の体重</div>
+                    <div class="text-[11px] text-zinc-500">元の値: 68.4 kg / 22.1%</div>
+                  </div>
+                </div>
+
+                <!-- 体重入力 -->
+                <div>
+                  <label class="text-xs font-medium text-zinc-600 mb-1.5 block">体重（kg）</label>
+                  <input
+                    type="text"
+                    inputmode="decimal"
+                    value="68.2"
+                    class="w-full rounded-xl border-2 border-orange-400 bg-white px-4 py-3 text-2xl font-bold text-center"
+                  />
+                </div>
+
+                <!-- 体脂肪率入力 -->
+                <div>
+                  <label class="text-xs font-medium text-zinc-600 mb-1.5 block">体脂肪率（%）<span class="text-zinc-400">任意</span></label>
+                  <input
+                    type="text"
+                    inputmode="decimal"
+                    value="22.0"
+                    class="w-full rounded-xl border border-orange-300 bg-white px-4 py-3 text-lg text-center"
+                  />
+                </div>
+
+                <div class="flex flex-col gap-2 pt-2 pb-4">
+                  <button class="w-full py-3 rounded-xl bg-orange-500 text-white text-sm font-bold">更新する</button>
+                  <button class="w-full py-3 rounded-xl border border-red-300 bg-white text-red-500 text-sm font-semibold">🗑 この記録を削除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 状態⑥ 食事編集（参考） ========== -->
+        <section>
+          <div class="mb-3 flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-zinc-400 text-white text-xs font-bold">6</span>
+            <h2 class="text-base font-semibold text-zinc-800">食事 編集モーダル <span class="text-xs text-zinc-400">（既存 / 参考）</span></h2>
+          </div>
+          <div class="phone mx-auto relative">
+            <div class="absolute inset-0 bg-orange-50/70 backdrop-blur-sm"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <div class="absolute left-0 right-0 bottom-0 rounded-t-3xl bg-white shadow-2xl border-t border-orange-200">
+              <div class="flex justify-center pt-2 pb-1">
+                <div class="w-10 h-1 rounded-full bg-zinc-300"></div>
+              </div>
+              <div class="px-5 pt-2 pb-3 flex items-center justify-between border-b border-orange-100">
+                <h3 class="text-sm font-bold">記録を編集</h3>
+                <button class="text-xs text-zinc-500">✕ 閉じる</button>
+              </div>
+
+              <div class="px-5 py-4 space-y-5">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 border border-orange-100">
+                  <div class="text-3xl">🐟</div>
+                  <div>
+                    <div class="text-sm font-bold">焼き鮭定食</div>
+                    <div class="text-[11px] text-zinc-500">基準: 1人前 / 860 kcal</div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-medium text-zinc-600">分量</span>
+                    <span class="text-lg font-bold text-orange-600">100<span class="text-xs text-zinc-500">%</span></span>
+                  </div>
+                  <input type="range" min="10" max="200" step="10" value="100" class="w-full" />
+                  <div class="flex justify-between text-[10px] text-zinc-400 mt-1">
+                    <span>10%</span><span>100%</span><span>200%</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 text-center">
+                  <div class="rounded-lg bg-orange-50 py-2 border border-orange-100">
+                    <div class="text-[10px] text-zinc-500">kcal</div>
+                    <div class="text-sm font-bold text-orange-600">860</div>
+                  </div>
+                  <div class="rounded-lg bg-orange-50 py-2 border border-orange-100">
+                    <div class="text-[10px] text-zinc-500">P</div>
+                    <div class="text-sm font-bold text-orange-600">32g</div>
+                  </div>
+                  <div class="rounded-lg bg-orange-50 py-2 border border-orange-100">
+                    <div class="text-[10px] text-zinc-500">F</div>
+                    <div class="text-sm font-bold text-orange-600">24g</div>
+                  </div>
+                  <div class="rounded-lg bg-orange-50 py-2 border border-orange-100">
+                    <div class="text-[10px] text-zinc-500">C</div>
+                    <div class="text-sm font-bold text-orange-600">98g</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-2 pt-2 pb-4">
+                  <button class="w-full py-3 rounded-xl bg-orange-500 text-white text-sm font-bold">更新する</button>
+                  <button class="w-full py-3 rounded-xl border border-red-300 bg-white text-red-500 text-sm font-semibold">🗑 この記録を削除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ポイントまとめ -->
+      <section class="rounded-2xl bg-white border border-orange-200 p-5 mt-8">
+        <h3 class="text-sm font-bold text-zinc-800 mb-2">💡 実装ポイント</h3>
+        <ul class="text-xs text-zinc-600 space-y-1.5 leading-relaxed">
+          <li>・ 3ページ共通：上部に <strong>14日分の日付ストリップ</strong> を追加（ダッシュボードと同じ）</li>
+          <li>・ 選択日に応じて「その日の記録」を表示。合計値もその日のものに</li>
+          <li>・ 一覧項目タップ → 下から出てくる <strong>ボトムシート編集モーダル</strong>（食事と同じUI）</li>
+          <li>・ <strong>食事</strong>：分量スライダー（10〜200%）→ PFC再計算</li>
+          <li>・ <strong>活動</strong>：時間スライダー（5〜180分）→ 消費カロリー再計算</li>
+          <li>・ <strong>体重</strong>：数値直接編集（kg と 体脂肪率）</li>
+          <li>・ 3種全て削除ボタン付き（2段階確認）</li>
+          <li>・ Today ボタンは「Today 4/11」のように実日付を併記（日付バグ検知用）</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>

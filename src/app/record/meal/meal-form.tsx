@@ -132,7 +132,13 @@ type Favorite = {
 
 type Tab = "search" | "direct" | "favorites";
 
-export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
+export function MealForm({
+  favorites = [],
+  defaultDate,
+}: {
+  favorites?: Favorite[];
+  defaultDate?: string;
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -426,7 +432,7 @@ export function MealForm({ favorites = [] }: { favorites?: Favorite[] }) {
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={jstToday()}
+              defaultValue={defaultDate ?? jstToday()}
               required
             />
           </div>

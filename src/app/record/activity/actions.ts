@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { activityLogs, activityFavorites } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 import { requireUser } from "@/lib/user";
 
 export async function saveActivity(formData: FormData) {
@@ -42,6 +43,60 @@ export async function saveActivity(formData: FormData) {
       caloriesBurned,
     });
   }
+
+  return { success: true };
+}
+
+// 活動記録の時間を更新してカロリーを再計算
+export async function updateActivityDuration(
+  id: string,
+  newDurationMinutes: number
+) {
+  const user = await requireUser();
+  if (!user) return { error: "ログインしてください" };
+
+  const clamped = Math.max(1, Math.min(600, Math.round(newDurationMinutes)));
+
+  // 対象レコードを取得
+  const rows = await db
+    .select()
+    .from(activityLogs)
+    .where(and(eq(activityLogs.id, id), eq(activityLogs.userId, user.id)));
+
+  if (rows.length === 0) {
+    return { error: "記録が見つかりません" };
+  }
+  const activity = rows[0];
+
+  // 既存の cal/分 比率を使って新しい時間でカロリーを再計算
+  let newCalories: number | null = null;
+  if (
+    activity.caloriesBurned != null &&
+    activity.durationMinutes > 0
+  ) {
+    const calPerMin = activity.caloriesBurned / activity.durationMinutes;
+    newCalories = Math.round(calPerMin * clamped);
+  }
+
+  await db
+    .update(activityLogs)
+    .set({
+      durationMinutes: clamped,
+      caloriesBurned: newCalories,
+    })
+    .where(and(eq(activityLogs.id, id), eq(activityLogs.userId, user.id)));
+
+  return { success: true };
+}
+
+// 活動記録を削除
+export async function deleteActivity(id: string) {
+  const user = await requireUser();
+  if (!user) return { error: "ログインしてください" };
+
+  await db
+    .delete(activityLogs)
+    .where(and(eq(activityLogs.id, id), eq(activityLogs.userId, user.id)));
 
   return { success: true };
 }

@@ -33,9 +33,11 @@ type Tab = "direct" | "favorites";
 export function ActivityForm({
   weightKg,
   favorites = [],
+  defaultDate,
 }: {
   weightKg: number;
   favorites?: Favorite[];
+  defaultDate?: string;
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -144,7 +146,7 @@ export function ActivityForm({
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={jstToday()}
+              defaultValue={defaultDate ?? jstToday()}
               required
             />
           </div>

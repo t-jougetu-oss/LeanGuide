@@ -6,7 +6,7 @@ import { saveWeight } from "./actions";
 import { DateInput } from "../../components/date-input";
 import { jstToday } from "@/lib/date";
 
-export function WeightForm() {
+export function WeightForm({ defaultDate }: { defaultDate?: string } = {}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -30,7 +30,7 @@ export function WeightForm() {
         <span className="text-sm font-medium">日付</span>
         <DateInput
           name="date"
-          defaultValue={jstToday()}
+          defaultValue={defaultDate ?? jstToday()}
           required
         />
       </div>
