@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { jstDaysAgo, jstToday } from "@/lib/date";
 
 export function DateNav({
   selectedDate,
@@ -11,22 +12,18 @@ export function DateNav({
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 直近14日間 + 今日を生成
+  // 直近14日間 + 今日を生成（JST基準）
   const dates: { date: string; label: string; isToday: boolean }[] = [];
-  const today = new Date();
   for (let i = 13; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = jstDaysAgo(i);
+    const [, m, day] = dateStr.split("-").map(Number);
     const isToday = i === 0;
-    const label = isToday
-      ? "Today"
-      : `${d.getMonth() + 1}/${d.getDate()}`;
+    const label = isToday ? "Today" : `${m}/${day}`;
     dates.push({ date: dateStr, label, isToday });
   }
 
-  // 年表示
-  const year = today.getFullYear();
+  // 年表示（JST）
+  const year = Number(jstToday().split("-")[0]);
 
   // 選択日が変わったらスクロール位置を調整
   useEffect(() => {
