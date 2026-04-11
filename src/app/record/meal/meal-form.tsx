@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { saveMeal } from "./actions";
+import { saveMeal, deleteFavorite } from "./actions";
 import { DateInput } from "../../components/date-input";
 import { jstToday } from "@/lib/date";
 
@@ -167,6 +167,38 @@ export function MealForm({
   useEffect(() => {
     if (defaultDate) setDate(defaultDate);
   }, [defaultDate]);
+  // お気に入り削除の2段階確認
+  const [confirmingDeleteFavId, setConfirmingDeleteFavId] = useState<
+    string | null
+  >(null);
+  // トースト通知
+  const [toast, setToast] = useState<string | null>(null);
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  async function handleDeleteFavorite(favId: string) {
+    // 1回目のタップ：確認モードに入る
+    if (confirmingDeleteFavId !== favId) {
+      setConfirmingDeleteFavId(favId);
+      // 3秒後に自動で確認解除
+      setTimeout(() => {
+        setConfirmingDeleteFavId((curr) => (curr === favId ? null : curr));
+      }, 3000);
+      return;
+    }
+    // 2回目のタップ：実削除
+    const result = await deleteFavorite(favId);
+    setConfirmingDeleteFavId(null);
+    if (result?.error) {
+      setToast(result.error);
+      return;
+    }
+    setToast("お気に入りから削除しました");
+    router.refresh();
+  }
 
   const resetForm = useCallback(() => {
     setFoodName("");
@@ -349,22 +381,51 @@ export function MealForm({
             </p>
           ) : (
             <div className="rounded-xl border border-orange-200 dark:border-zinc-800 divide-y divide-orange-200 dark:divide-zinc-800">
-              {filteredFavorites.map((fav) => (
-                <button
-                  key={fav.id}
-                  type="button"
-                  onClick={() => applyFavorite(fav)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  <span className="text-sm">{fav.name}</span>
-                  {fav.calories && (
-                    <span className="text-xs text-zinc-400">
-                      {fav.calories}kcal
-                    </span>
-                  )}
-                </button>
-              ))}
+              {filteredFavorites.map((fav) => {
+                const isConfirming = confirmingDeleteFavId === fav.id;
+                return (
+                  <div
+                    key={fav.id}
+                    className="flex items-stretch hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => applyFavorite(fav)}
+                      disabled={isConfirming}
+                      className="flex-1 min-w-0 flex items-center justify-between px-4 py-3 text-left disabled:opacity-50"
+                    >
+                      <span className="text-sm truncate">{fav.name}</span>
+                      {fav.calories && (
+                        <span className="text-xs text-zinc-400 shrink-0 ml-2">
+                          {fav.calories}kcal
+                        </span>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteFavorite(fav.id)}
+                      aria-label={
+                        isConfirming
+                          ? "もう一度押して削除を確定"
+                          : "お気に入りから削除"
+                      }
+                      className={`shrink-0 w-14 flex items-center justify-center text-xs font-medium transition-colors ${
+                        isConfirming
+                          ? "bg-red-500 text-white"
+                          : "text-zinc-300 hover:text-red-500"
+                      }`}
+                    >
+                      {isConfirming ? "削除する" : "🗑"}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
+          )}
+          {confirmingDeleteFavId && (
+            <p className="text-[11px] text-red-500 text-center">
+              もう一度タップで削除されます
+            </p>
           )}
         </div>
       )}
@@ -580,6 +641,13 @@ export function MealForm({
             {saving ? "保存中..." : "保存"}
           </button>
         </form>
+      )}
+
+      {/* トースト通知（お気に入り削除時など） */}
+      {toast && (
+        <div className="fixed left-1/2 bottom-24 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-medium shadow-lg pointer-events-none">
+          {toast}
+        </div>
       )}
     </div>
   );

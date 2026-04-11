@@ -166,6 +166,25 @@ export async function deleteMeal(mealId: string) {
   return { success: true };
 }
 
+// お気に入り（mealFavorites）を1件削除
+// - mealFavorites から1行 DELETE するだけ
+// - meal_logs 側のデータは一切変更しない
+export async function deleteFavorite(favoriteId: string) {
+  const user = await requireUser();
+  if (!user) return { error: "ログインしてください" };
+
+  await db
+    .delete(mealFavorites)
+    .where(
+      and(
+        eq(mealFavorites.id, favoriteId),
+        eq(mealFavorites.userId, user.id)
+      )
+    );
+
+  return { success: true };
+}
+
 // 食事記録をお気に入りに追加／解除（トグル）
 // - 未登録ならレコードの baseCalories 等を使って mealFavorites に INSERT
 // - すでに同名が登録済みなら mealFavorites から DELETE
