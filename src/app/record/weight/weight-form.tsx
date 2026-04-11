@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveWeight } from "./actions";
 import { DateInput } from "../../components/date-input";
@@ -10,6 +10,10 @@ export function WeightForm({ defaultDate }: { defaultDate?: string } = {}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [date, setDate] = useState(defaultDate ?? jstToday());
+  useEffect(() => {
+    if (defaultDate) setDate(defaultDate);
+  }, [defaultDate]);
 
   async function handleSubmit(formData: FormData) {
     setSaving(true);
@@ -30,7 +34,8 @@ export function WeightForm({ defaultDate }: { defaultDate?: string } = {}) {
         <span className="text-sm font-medium">日付</span>
         <DateInput
           name="date"
-          defaultValue={defaultDate ?? jstToday()}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
           required
         />
       </div>

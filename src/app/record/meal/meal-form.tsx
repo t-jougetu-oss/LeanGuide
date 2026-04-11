@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveMeal } from "./actions";
 import { DateInput } from "../../components/date-input";
@@ -162,6 +162,11 @@ export function MealForm({
   const [basePortion, setBasePortion] = useState("");
   const [portion, setPortion] = useState("100");
   const [isFromFavorite, setIsFromFavorite] = useState(false);
+  // 日付（上部ストリップで過去日を選択したら自動追従）
+  const [date, setDate] = useState(defaultDate ?? jstToday());
+  useEffect(() => {
+    if (defaultDate) setDate(defaultDate);
+  }, [defaultDate]);
 
   const resetForm = useCallback(() => {
     setFoodName("");
@@ -432,7 +437,8 @@ export function MealForm({
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={defaultDate ?? jstToday()}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               required
             />
           </div>

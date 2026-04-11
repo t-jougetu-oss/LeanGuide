@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveActivity } from "./actions";
 import { DateInput } from "../../components/date-input";
@@ -48,6 +48,10 @@ export function ActivityForm({
   const [memo, setMemo] = useState("");
   const [addToFavorite, setAddToFavorite] = useState(false);
   const [customName, setCustomName] = useState("");
+  const [date, setDate] = useState(defaultDate ?? jstToday());
+  useEffect(() => {
+    if (defaultDate) setDate(defaultDate);
+  }, [defaultDate]);
 
   const estimatedCalories = useMemo(() => {
     const preset = activityPresets.find((p) => p.value === activityType);
@@ -146,7 +150,8 @@ export function ActivityForm({
             <span className="text-sm font-medium">日付</span>
             <DateInput
               name="date"
-              defaultValue={defaultDate ?? jstToday()}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
               required
             />
           </div>
