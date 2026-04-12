@@ -108,10 +108,10 @@ export default async function AnalysisPage() {
     if (meal || weight) {
       dailyData.push({
         date: dateStr,
-        calories: meal?.totalCalories ?? 0,
-        protein: meal?.totalProtein ?? 0,
-        fat: meal?.totalFat ?? 0,
-        carb: meal?.totalCarb ?? 0,
+        calories: Number(meal?.totalCalories ?? 0),
+        protein: Number(meal?.totalProtein ?? 0),
+        fat: Number(meal?.totalFat ?? 0),
+        carb: Number(meal?.totalCarb ?? 0),
         weight: weight ? Number(weight.weightKg) : null,
         isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
       });

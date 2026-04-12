@@ -63,10 +63,10 @@ export default async function GraphPage() {
 
   const mealData = meals.map((m) => ({
     date: m.date,
-    calories: m.totalCalories,
-    protein: m.totalProtein,
-    fat: m.totalFat,
-    carb: m.totalCarb,
+    calories: Number(m.totalCalories),
+    protein: Number(m.totalProtein),
+    fat: Number(m.totalFat),
+    carb: Number(m.totalCarb),
   }));
 
   return (
