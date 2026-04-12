@@ -59,6 +59,7 @@ function PfcSlider({
         {editing ? (
           <input
             type="text"
+            inputMode="decimal"
             defaultValue={Number(value) === 0 ? "" : value}
             placeholder="0"
             onBlur={(e) => commitValue(e.target.value)}
